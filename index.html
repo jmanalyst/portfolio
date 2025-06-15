@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JOEMUR</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700&display=swap" rel="stylesheet">
+    <style>
+        /* Custom styles for the page and canvas */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #ffffff; /* Changed background to white */
+            color: #1f2937; /* Changed text color to a dark gray */
+            overflow: hidden; /* Prevent scrollbars from appearing */
+            margin: 0;
+            padding: 0;
+        }
+
+        canvas {
+            display: block;
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 1; /* Place canvas behind the UI */
+        }
+
+        /* Styling for the UI elements on top of the canvas */
+        .ui-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 2; /* UI is on top */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            pointer-events: none; /* Allow mouse events to pass through to the canvas by default */
+            text-align: center;
+        }
+        
+        /* Updated to allow clicks on the menu and better content display */
+        .ui-content {
+            background-color: rgba(255, 255, 255, 0.5); /* Semi-transparent light backdrop for text */
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            padding: 2rem 3rem;
+            border-radius: 1.5rem;
+            border: 1px solid rgba(0, 0, 0, 0.05); /* Subtle dark border */
+            pointer-events: auto; /* Make this section clickable */
+            max-width: 90%;
+            width: 900px; /* Increased width to accommodate embedded content */
+            max-height: 85vh; /* Increased max height */
+            overflow-y: auto; /* Allow scrolling for long content */
+            transition: max-height 0.5s ease-in-out; /* Smooth transition for max-height */
+        }
+
+        /* Custom scrollbar for a cleaner look */
+        .ui-content::-webkit-scrollbar {
+            width: 8px;
+        }
+        .ui-content::-webkit-scrollbar-track {
+            background: rgba(0,0,0,0.05);
+            border-radius: 10px;
+        }
+        .ui-content::-webkit-scrollbar-thumb {
+            background: rgba(0,0,0,0.2);
+            border-radius: 10px;
+        }
+        .ui-content::-webkit-scrollbar-thumb:hover {
+            background: rgba(0,0,0,0.3);
+        }
+
+    </style>
+</head>
+<body>
+
+    <!-- The canvas where the abstract art is rendered -->
+    <canvas id="artCanvas"></canvas>
+
+    <!-- UI elements that sit on top of the canvas -->
+    <div class="ui-container">
+        <div class="ui-content">
+            <!-- Added Name Heading -->
+            <h1 class="text-4xl font-bold mb-6 tracking-tight">JOSE MURGUIA</h1>
+            
+            <!-- Navigation Menu -->
+            <nav>
+                <ul class="flex justify-center gap-x-10 md:gap-x-16">
+                    <li><a href="#" class="nav-link text-lg text-gray-600 hover:text-black transition-colors duration-300" data-target="home-content">Home</a></li>
+                    <li><a href="#" class="nav-link text-lg text-gray-600 hover:text-black transition-colors duration-300" data-target="projects-content">Projects</a></li>
+                    <li><a href="#" class="nav-link text-lg text-gray-600 hover:text-black transition-colors duration-300" data-target="contact-content">Contact</a></li>
+                </ul>
+            </nav>
+            <!-- End Navigation Menu -->
+
+            <!-- Content Sections that appear on click -->
+            <div id="page-content-container" class="mt-6">
+                <div id="home-content" class="page-content hidden p-4 text-center">
+                    <h2 class="text-xl font-bold">-</h2>
+                    <p class="mt-2 text-sm">Web Development, AI Intergration, Data Analyitcs, SQL, Python and Power BI.</p>
+                </div>
+                <div id="projects-content" class="page-content hidden p-4 text-left">
+                    <h2 class="text-xl font-bold text-center">Projects</h2>
+                    <p class="mt-2 text-center text-sm">Click a project below to view it.</p>
+                    <!-- Interactive Project List -->
+                    <div class="flex justify-center gap-x-6 my-4">
+                        <a href="#" class="project-link font-bold text-black" data-target="power-bi-viewer">Power BI Report</a>
+                        <a href="#" class="project-link text-gray-600" data-target="joemur-viewer">Python: Data Exploration Part I</a>
+                        <a href="#" class="project-link text-gray-600" data-target="slides-viewer">Data Exploration Part II</a>
+                    </div>
+
+                    <!-- Container for the different project iframes -->
+                    <div id="project-viewer-container">
+                        <!-- Power BI Embed Section -->
+                        <div id="power-bi-viewer" class="project-viewer">
+                            <iframe 
+                                title="Power BI Report" 
+                                src="https://app.powerbi.com/view?r=eyJrIjoiNTZhMDRmM2ItOTg0MC00YTFmLWJjYjUtNmEwYzRiNjEzZDAwIiwidCI6IjAxOGU1Y2Y3LTMxZTUtNDYwYS05ODlmLTcyMDRmZDUyOGI1YSJ9" 
+                                frameborder="0" 
+                                allowFullScreen="true"
+                                class="w-full h-[500px] md:h-[650px] rounded-lg border border-gray-200">
+                            </iframe>
+                        </div>
+                         <!-- JoeMur.com Embed Section -->
+                        <div id="joemur-viewer" class="project-viewer hidden">
+                            <iframe 
+                                title="JoeMur Exploration" 
+                                src="http://www.joemur.com/Part_I_exploration.html"
+                                frameborder="0" 
+                                allowFullScreen="true"
+                                class="w-full h-[500px] md:h-[650px] rounded-lg border border-gray-200">
+                            </iframe>
+                        </div>
+                        <!-- New Slide Deck Embed Section -->
+                        <div id="slides-viewer" class="project-viewer hidden">
+                             <iframe 
+                                title="Slide Deck" 
+                                src="http://www.joemur.com/Part_II_slide_deck.slides.html#/"
+                                frameborder="0" 
+                                allowFullScreen="true"
+                                class="w-full h-[500px] md:h-[650px] rounded-lg border border-gray-200">
+                            </iframe>
+                        </div>
+                    </div>
+                </div>
+                <div id="contact-content" class="page-content hidden p-4 text-center">
+                    <h2 class="text-xl font-bold">Get in Touch</h2>
+                    <div class="mt-4 space-y-2 text-sm">
+                        <p><strong>Location:</strong> Houston, Texas</p>
+                        <p><strong>Phone:</strong> (281) 772-1495</p>
+                        <p><strong>Email:</strong> murguia.joe@gmail.com</p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    
+    <script>
+        // --- Canvas & Context Setup ---
+        const canvas = document.getElementById('artCanvas');
+        const ctx = canvas.getContext('2d');
+
+        // --- State and Configuration ---
+        let width, height; // Will be set on resize
+        let particles = [];
+        const particleCount = 300; // OPTIMIZATION: Reduced particle count
+        const connectionDistance = 100;
+        let animationFrameId;
+
+        // --- OPTIMIZATION: Grid System Configuration ---
+        const cellSize = 100; // Should be >= connectionDistance
+        let grid;
+
+        // Mouse position tracking
+        const mouse = {
+            x: null,
+            y: null,
+            radius: 150
+        };
+        
+        // --- Particle Class ---
+        class Particle {
+            constructor() {
+                // OPTIMIZATION: Added unique ID for pair checking
+                this.id = Math.random();
+                this.x = Math.random() * width;
+                this.y = Math.random() * height;
+                this.size = Math.random() * 2 + 1;
+                this.baseSpeed = 0.5;
+                this.speedX = (Math.random() * 2 - 1) * this.baseSpeed;
+                this.speedY = (Math.random() * 2 - 1) * this.baseSpeed;
+                
+                const hue = Math.random() * 40 + 180;
+                const saturation = Math.random() * 30 + 70;
+                const lightness = Math.random() * 40 + 30;
+                this.color = `hsl(${hue}, ${saturation}%, ${lightness}%)`;
+            }
+
+            update() {
+                let dx = this.x - mouse.x;
+                let dy = this.y - mouse.y;
+                let distance = Math.sqrt(dx * dx + dy * dy);
+                if (distance < mouse.radius) {
+                    const forceDirectionX = dx / distance;
+                    const forceDirectionY = dy / distance;
+                    const force = (mouse.radius - distance) / mouse.radius;
+                    this.x += forceDirectionX * force * 3;
+                    this.y += forceDirectionY * force * 3;
+                } else {
+                    this.x += this.speedX;
+                    this.y += this.speedY;
+                }
+
+                if (this.x > width) this.x = 0;
+                if (this.x < 0) this.x = width;
+                if (this.y > height) this.y = 0;
+                if (this.y < 0) this.y = height;
+            }
+
+            draw() {
+                ctx.fillStyle = this.color;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+
+        // --- Core Functions ---
+        function init() {
+            particles = [];
+            for (let i = 0; i < particleCount; i++) {
+                particles.push(new Particle());
+            }
+        }
+        
+        // --- OPTIMIZATION: New functions for the grid system ---
+        function updateGrid() {
+            grid = new Map();
+            for (const particle of particles) {
+                const cellX = Math.floor(particle.x / cellSize);
+                const cellY = Math.floor(particle.y / cellSize);
+                const key = `${cellX},${cellY}`;
+                if (!grid.has(key)) {
+                    grid.set(key, []);
+                }
+                grid.get(key).push(particle);
+            }
+        }
+
+        // --- OPTIMIZATION: Rewritten connectParticles function ---
+        function connectParticles() {
+            const checkedPairs = new Set();
+            for (const particle of particles) {
+                const cellX = Math.floor(particle.x / cellSize);
+                const cellY = Math.floor(particle.y / cellSize);
+
+                // Check current cell and 8 neighbors
+                for (let offsetX = -1; offsetX <= 1; offsetX++) {
+                    for (let offsetY = -1; offsetY <= 1; offsetY++) {
+                        const neighborKey = `${cellX + offsetX},${cellY + offsetY}`;
+                        if (grid.has(neighborKey)) {
+                            const neighborParticles = grid.get(neighborKey);
+                            for (const otherParticle of neighborParticles) {
+                                if (particle === otherParticle) continue;
+
+                                const pairKey = particle.id < otherParticle.id ? `${particle.id}-${otherParticle.id}` : `${otherParticle.id}-${particle.id}`;
+                                if (checkedPairs.has(pairKey)) continue;
+
+                                const dx = particle.x - otherParticle.x;
+                                const dy = particle.y - otherParticle.y;
+                                const distance = Math.sqrt(dx * dx + dy * dy);
+
+                                if (distance < connectionDistance) {
+                                    ctx.beginPath();
+                                    const opacity = 1 - (distance / connectionDistance);
+                                    ctx.strokeStyle = particle.color.replace('hsl', 'hsla').replace(')', `, ${opacity})`);
+                                    ctx.lineWidth = 0.5;
+                                    ctx.moveTo(particle.x, particle.y);
+                                    ctx.lineTo(otherParticle.x, otherParticle.y);
+                                    ctx.stroke();
+                                }
+                                checkedPairs.add(pairKey);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+
+        // The main animation loop
+        function animate() {
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.2)';
+            ctx.fillRect(0, 0, width, height);
+
+            // Update positions and draw each particle
+            particles.forEach(p => {
+                p.update();
+                p.draw();
+            });
+
+            // OPTIMIZATION: Update the grid before connecting particles
+            updateGrid();
+            connectParticles();
+
+            animationFrameId = requestAnimationFrame(animate);
+        }
+        
+        // --- Event Listeners ---
+        function handleResize() {
+            width = window.innerWidth;
+            height = window.innerHeight;
+            canvas.width = width;
+            canvas.height = height;
+            init();
+        }
+
+        window.addEventListener('mousemove', (event) => {
+            mouse.x = event.x;
+            mouse.y = event.y;
+        });
+
+        window.addEventListener('mouseout', () => {
+            mouse.x = null;
+            mouse.y = null;
+        });
+        
+        // --- Navigation Logic ---
+        const uiContent = document.querySelector('.ui-content');
+        const navLinks = document.querySelectorAll('.nav-link');
+        const contentPanels = document.querySelectorAll('.page-content');
+        let isAnimating = false;
+
+        const baseHeight = uiContent.scrollHeight;
+        uiContent.style.maxHeight = `${baseHeight}px`;
+        
+        contentPanels.forEach(panel => panel.classList.add('hidden'));
+
+        navLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                if (isAnimating) return;
+
+                const targetId = link.getAttribute('data-target');
+                const targetPanel = document.getElementById(targetId);
+                const isAlreadyActive = link.classList.contains('font-bold');
+
+                navLinks.forEach(navLink => {
+                    navLink.classList.remove('font-bold', 'text-black');
+                    navLink.classList.add('text-gray-600');
+                });
+                
+                if (isAlreadyActive) {
+                    isAnimating = true;
+                    uiContent.style.maxHeight = `${baseHeight}px`;
+                    
+                    uiContent.addEventListener('transitionend', function hidePanel() {
+                        targetPanel.classList.add('hidden');
+                        isAnimating = false;
+                        uiContent.removeEventListener('transitionend', hidePanel);
+                    }, { once: true });
+                } else {
+                    isAnimating = true;
+                    contentPanels.forEach(panel => panel.classList.add('hidden'));
+                    targetPanel.classList.remove('hidden');
+                    link.classList.add('font-bold', 'text-black');
+                    link.classList.remove('text-gray-600');
+
+                    const newHeight = uiContent.scrollHeight;
+                    uiContent.style.maxHeight = `${newHeight}px`;
+
+                     uiContent.addEventListener('transitionend', function onExpandEnd() {
+                        isAnimating = false;
+                        uiContent.removeEventListener('transitionend', onExpandEnd);
+                    }, { once: true });
+                }
+            });
+        });
+
+        // --- Sub-Navigation for Projects ---
+        const projectLinks = document.querySelectorAll('.project-link');
+        const projectViewers = document.querySelectorAll('.project-viewer');
+
+        projectLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const targetId = link.getAttribute('data-target');
+
+                // Update visual state of project links
+                projectLinks.forEach(projLink => {
+                    projLink.classList.remove('font-bold', 'text-black');
+                    projLink.classList.add('text-gray-600');
+                });
+                link.classList.add('font-bold', 'text-black');
+                link.classList.remove('text-gray-600');
+                
+                // Show the correct project viewer
+                projectViewers.forEach(viewer => {
+                    if (viewer.id === targetId) {
+                        viewer.classList.remove('hidden');
+                    } else {
+                        viewer.classList.add('hidden');
+                    }
+                });
+
+                // Recalculate and set height for smooth animation
+                 const newHeight = uiContent.scrollHeight;
+                 uiContent.style.maxHeight = `${newHeight}px`;
+            });
+        });
+
+
+        // --- Start the show ---
+        window.addEventListener('resize', handleResize);
+        handleResize();
+        animate();
+    </script>
+
+</body>
+</html>
