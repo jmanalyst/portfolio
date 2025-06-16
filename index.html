@@ -6,6 +6,14 @@
     <title>Animated Particle Background</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700&display=swap" rel="stylesheet">
+
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+
+
     <style>
         /* Basic CSS reset and styling for the body */
         body {
@@ -69,15 +77,31 @@
             }
         }
     </style>
+
+        
+
 </head>
 <body>
     <!-- The canvas element where the animation will be drawn -->
+
+            
     <canvas id="particleCanvas"></canvas>
+
+    
 
     <!-- Content box to display over the animated background -->
     <div class="content">
         <!-- Name Heading -->
+         
+         
+
+        
+
+
+
         <h1 class="text-1xl sm:text-2xl font-bold mb-6 tracking-tight text-white">JOSE MURGUIA</h1>
+
+
         
         <!-- Navigation Menu -->
         <nav>
@@ -92,8 +116,12 @@
         <!-- Content Sections that appear on click -->
         <div id="page-content-container" class="mt-6">
             <div id="home-content" class="page-content hidden p-4 text-center">
-                <h2 class="text-xl font-bold">[]</h2>
-                <p class="mt-2 text-sm text-gray-200">Web Development and Data Analytics</p>
+                <h2 class="text-xl font-bold"></h2>
+                <p class="mt-2 text-sm text-gray-200">Web Development - Data Analytics - Data Visualization </p>
+
+                <div id="force-graph-container" style="width: 100%; height: 300px;"></div>
+                <div id="bar-chart-container" style="width: 100%; height: 300px;"></div>
+
             </div>
             <div id="projects-content" class="page-content hidden p-4 text-left">
                 <h2 class="text-xl font-bold text-center">[]</h2>
@@ -121,7 +149,7 @@
                     <div id="joemur-viewer" class="project-viewer hidden">
                         <iframe 
                             title="JoeMur Exploration" 
-                            src="https://joemur.com/Part_I_exploration.html"
+                            src="http://www.joemur.com/Part_I_exploration.html"
                             frameborder="0" 
                             allowFullScreen="true"
                             class="w-full h-[400px] md:h-[650px] rounded-lg border border-gray-700">
@@ -131,7 +159,7 @@
                     <div id="slides-viewer" class="project-viewer hidden">
                          <iframe 
                             title="Slide Deck" 
-                            src="https://joemur.com/Part_II_slide_deck.slides.html#"
+                            src="http://www.joemur.com/Part_II_slide_deck.slides.html#"
                             frameborder="0" 
                             allowFullScreen="true"
                             class="w-full h-[400px] md:h-[600px] rounded-lg border border-gray-700">
@@ -328,7 +356,160 @@
         // --- Start the animation ---
         initParticles();
         animateParticles();
+
+        
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+
+
+
+
+
+
+
+
+
+
     </script>
+
+
+
+
+
+
+<script type="text/babel">
+    const { useState, useEffect, useRef, useMemo } = React;
+
+    // --- 1. DATA GENERATION ---
+    // Data for Force Graph
+    const generateForceGraphData = () => {
+      const numNodes = 25;
+      const nodes = Array.from({ length: numNodes }, (_, i) => ({ id: i }));
+      const links = Array.from({ length: numNodes - 1 }, (_, i) => ({
+        source: Math.floor(Math.random() * numNodes),
+        target: Math.floor(Math.random() * numNodes),
+      })).filter(d => d.source !== d.target);
+      return { nodes, links };
+    };
+
+    // Data for Bar Chart
+    const generateBarChartData = () => [
+      { label: 'A', value: Math.floor(Math.random() * 100) + 10 },
+      { label: 'B', value: Math.floor(Math.random() * 100) + 10 },
+      { label: 'C', value: Math.floor(Math.random() * 100) + 10 },
+      { label: 'D', value: Math.floor(Math.random() * 100) + 10 },
+      { label: 'E', value: Math.floor(Math.random() * 100) + 10 },
+      { label: 'F', value: Math.floor(Math.random() * 100) + 10 },
+    ];
+
+    // --- 2. CUSTOM HOOK (Used by both components) ---
+    const useChartDimensions = (passedSettings) => {
+      const ref = useRef();
+      const dimensions = useMemo(() => ({
+        ...{ top: 10, right: 10, bottom: 10, left: 10 },
+        ...passedSettings
+      }), [passedSettings]);
+      const [width, setWidth] = useState(0);
+      const [height, setHeight] = useState(0);
+      useEffect(() => {
+        const element = ref.current;
+        if (!element) return;
+        const resizeObserver = new ResizeObserver(entries => {
+          if (!Array.isArray(entries) || !entries.length) return;
+          const entry = entries[0];
+          if (width !== entry.contentRect.width) setWidth(entry.contentRect.width);
+          if (height !== entry.contentRect.height) setHeight(entry.contentRect.height);
+        });
+        resizeObserver.observe(element);
+        return () => resizeObserver.disconnect();
+      }, [width, height]);
+      return [ref, {
+        ...dimensions,
+        width: width,
+        height: height,
+        boundedWidth: Math.max(0, width - dimensions.left - dimensions.right),
+        boundedHeight: Math.max(0, height - dimensions.top - dimensions.bottom),
+      }];
+    };
+
+    // --- 3. REACT COMPONENTS ---
+
+    // ForceGraph Component (no changes)
+    const ForceGraph = ({ data }) => {
+      const [ref, dms] = useChartDimensions({});
+      const svgRef = useRef();
+      useEffect(() => {
+        if (!dms.width || !data.nodes) return;
+        const links = data.links.map(d => ({...d}));
+        const nodes = data.nodes.map(d => ({...d}));
+        const simulation = d3.forceSimulation(nodes)
+          .force("link", d3.forceLink(links).id(d => d.id).distance(50))
+          .force("charge", d3.forceManyBody().strength(-150))
+          .force("center", d3.forceCenter(dms.width / 2, dms.height / 2));
+        const svg = d3.select(svgRef.current);
+        svg.selectAll("*").remove();
+        const link = svg.append("g").attr("stroke", "#64748b").attr("stroke-opacity", 0.6).selectAll("line").data(links).join("line").attr("stroke-width", 1.5);
+        const node = svg.append("g").attr("stroke", "#fff").attr("stroke-width", 1.5).selectAll("circle").data(nodes).join("circle").attr("r", 5).attr("fill", "#cbd5e1");
+        node.append("title").text(d => d.id);
+        simulation.on("tick", () => {
+          link.attr("x1", d => d.source.x).attr("y1", d => d.source.y).attr("x2", d => d.target.x).attr("y2", d => d.target.y);
+          node.attr("cx", d => d.x).attr("cy", d => d.y);
+        });
+      }, [data, dms]);
+      return <div ref={ref} style={{ width: '100%', height: '100%' }}><svg ref={svgRef} width={dms.width} height={dms.height}></svg></div>;
+    };
+
+    // BarChart Component (newly added)
+    const BarChart = ({ data }) => {
+      const [ref, dms] = useChartDimensions({ top: 20, right: 20, bottom: 20, left: 20 });
+      const svgRef = useRef();
+      useEffect(() => {
+        if (!dms.width || !data.length) return;
+        const svg = d3.select(svgRef.current);
+        svg.selectAll("*").remove();
+        const xScale = d3.scaleBand().domain(data.map(d => d.label)).range([0, dms.boundedWidth]).padding(0.2);
+        const yScale = d3.scaleLinear().domain([0, d3.max(data, d => d.value)]).range([dms.boundedHeight, 0]);
+        const g = svg.append("g").attr("transform", `translate(${dms.left}, ${dms.top})`);
+        g.selectAll(".bar").data(data).enter().append("rect")
+          .attr("class", "bar")
+          .attr("x", d => xScale(d.label))
+          .attr("width", xScale.bandwidth())
+          .attr("y", dms.boundedHeight)
+          .attr("height", 0)
+          .attr("fill", "white")
+          .transition().duration(800).delay((d, i) => i * 50)
+          .attr("y", d => yScale(d.value))
+          .attr("height", d => dms.boundedHeight - yScale(d.value));
+      }, [data, dms]);
+      return <div ref={ref} style={{ width: '100%', height: '100%' }}><svg ref={svgRef} width={dms.width} height={dms.height}></svg></div>;
+    };
+
+    // --- 4. RENDER THE COMPONENTS ---
+    // Render the Force Graph into its container
+    const forceGraphContainer = document.getElementById('force-graph-container');
+    const forceGraphRoot = ReactDOM.createRoot(forceGraphContainer);
+    forceGraphRoot.render(<ForceGraph data={generateForceGraphData()} />);
+
+    // Render the Bar Chart into its container
+    const barChartContainer = document.getElementById('bar-chart-container');
+    const barChartRoot = ReactDOM.createRoot(barChartContainer);
+    barChartRoot.render(<BarChart data={generateBarChartData()} />);
+
+  </script>
 
 </body>
 </html>
