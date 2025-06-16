@@ -19,7 +19,6 @@
         body {
             margin: 0;
             overflow: hidden;
-            /* Using black for the background color */
             background-color: #000000;
             font-family: 'Inter', sans-serif;
             color: #fff;
@@ -39,12 +38,12 @@
             z-index: -1; /* Place canvas behind other content */
         }
 
-        /* Styling for the content box from the new code */
+        /* Styling for the content box */
         .content {
-            background-color: rgba(20, 20, 25, 0.7); /* Slightly adjusted for dark bg */
+            background-color: rgba(20, 20, 25, 0.7);
             backdrop-filter: blur(10px);
             -webkit-backdrop-filter: blur(10px);
-            padding: 1.5rem;
+            /* REMOVED padding from here; moved to Tailwind classes for responsiveness */
             border-radius: 1.5rem;
             border: 1px solid rgba(255, 255, 255, 0.1);
             width: 90%;
@@ -70,99 +69,68 @@
             background: rgba(255,255,255,0.3);
         }
 
-        /* Responsive adjustments for larger screens */
-        @media (min-width: 640px) {
-            .content {
-                padding: 2rem 3rem;
-            }
-        }
-    </style>
+        /* REMOVED: Redundant media query. Padding is now handled by Tailwind utilities. */
 
-        
+    </style>
 
 </head>
 <body>
-    <!-- The canvas element where the animation will be drawn -->
-
-            
     <canvas id="particleCanvas"></canvas>
 
-    
+    <div class="content p-4 sm:p-6 md:p-8">
+        <h1 class="text-xl sm:text-2xl font-bold mb-6 tracking-tight text-white">JOSE MURGUIA</h1>
 
-    <!-- Content box to display over the animated background -->
-    <div class="content">
-        <!-- Name Heading -->
-         
-         
-
-        
-
-
-
-        <h1 class="text-1xl sm:text-2xl font-bold mb-6 tracking-tight text-white">JOSE MURGUIA</h1>
-
-
-        
-        <!-- Navigation Menu -->
         <nav>
             <ul class="flex flex-col sm:flex-row justify-center gap-y-4 sm:gap-x-10 md:gap-x-16">
-                <li><a href="#" class="nav-link text-lg text-gray-300 hover:text-white transition-colors duration-300" data-target="home-content">ABOUT</a></li>
-                <li><a href="#" class="nav-link text-lg text-gray-300 hover:text-white transition-colors duration-300" data-target="projects-content">PROJECTS</a></li>
-                <li><a href="#" class="nav-link text-lg text-gray-300 hover:text-white transition-colors duration-300" data-target="contact-content">CONTACT</a></li>
+                <li><a href="#" class="nav-link text-base sm:text-lg text-gray-300 hover:text-white transition-colors duration-300" data-target="home-content">ABOUT</a></li>
+                <li><a href="#" class="nav-link text-base sm:text-lg text-gray-300 hover:text-white transition-colors duration-300" data-target="projects-content">PROJECTS</a></li>
+                <li><a href="#" class="nav-link text-base sm:text-lg text-gray-300 hover:text-white transition-colors duration-300" data-target="contact-content">CONTACT</a></li>
             </ul>
         </nav>
-        <!-- End Navigation Menu -->
-
-        <!-- Content Sections that appear on click -->
         <div id="page-content-container" class="mt-6">
             <div id="home-content" class="page-content hidden p-4 text-center">
                 <h2 class="text-xl font-bold"></h2>
                 <p class="mt-2 text-sm text-gray-200">Web Development - Data Analytics - Data Visualization </p>
 
-                <div id="force-graph-container" style="width: 100%; height: 300px;"></div>
-                <div id="bar-chart-container" style="width: 100%; height: 300px;"></div>
+                <div id="force-graph-container" class="w-full h-[250px] sm:h-[300px]"></div>
+                <div id="bar-chart-container" class="w-full h-[250px] sm:h-[300px]"></div>
 
             </div>
             <div id="projects-content" class="page-content hidden p-4 text-left">
                 <h2 class="text-xl font-bold text-center">[]</h2>
                 <p class="mt-2 text-center text-sm text-gray-300">Click a project below to view it.</p>
-                <!-- Interactive Project List -->
                 <div class="flex flex-col sm:flex-row justify-center items-center gap-y-3 sm:gap-x-6 my-4">
                     <a href="#" class="project-link font-bold text-white" data-target="power-bi-viewer">Power BI Report</a>
                     <a href="#" class="project-link text-gray-300 hover:text-white" data-target="joemur-viewer">Python: Data Exploration Part I</a>
                     <a href="#" class="project-link text-gray-300 hover:text-white" data-target="slides-viewer">Data Exploration Part II</a>
                 </div>
 
-                <!-- Container for the different project iframes -->
                 <div id="project-viewer-container">
-                    <!-- Power BI Embed Section -->
                     <div id="power-bi-viewer" class="project-viewer">
-                        <iframe 
-                            title="Power BI Report" 
-                            src="https://app.powerbi.com/view?r=eyJrIjoiNTZhMDRmM2ItOTg0MC00YTFmLWJjYjUtNmEwYzRiNjEzZDAwIiwidCI6IjAxOGU1Y2Y3LTMxZTUtNDYwYS05ODlmLTcyMDRmZDUyOGI1YSJ9" 
-                            frameborder="0" 
+                        <iframe
+                            title="Power BI Report"
+                            src="https://app.powerbi.com/view?r=eyJrIjoiNTZhMDRmM2ItOTg0MC00YTFmLWJjYjUtNmEwYzRiNjEzZDAwIiwidCI6IjAxOGU1Y2Y3LTMxZTUtNDYwYS05ODlmLTcyMDRmZDUyOGI1YSJ9"
+                            frameborder="0"
                             allowFullScreen="true"
-                            class="w-full h-[400px] md:h-[500px] rounded-lg border border-gray-700">
+                            class="w-full rounded-lg border border-gray-700 h-[350px] sm:h-[450px] md:h-[550px]">
                         </iframe>
                     </div>
-                     <!-- JoeMur.com Embed Section -->
-                    <div id="joemur-viewer" class="project-viewer hidden">
-                        <iframe 
-                            title="JoeMur Exploration" 
+                     <div id="joemur-viewer" class="project-viewer hidden">
+                        <iframe
+                            title="JoeMur Exploration"
                             src="http://www.joemur.com/Part_I_exploration.html"
-                            frameborder="0" 
+                            frameborder="0"
                             allowFullScreen="true"
-                            class="w-full h-[400px] md:h-[650px] rounded-lg border border-gray-700">
+                            class="w-full rounded-lg border border-gray-700 h-[350px] sm:h-[450px] md:h-[650px]">
                         </iframe>
                     </div>
-                    <!-- New Slide Deck Embed Section -->
                     <div id="slides-viewer" class="project-viewer hidden">
-                         <iframe 
-                            title="Slide Deck" 
+                         <iframe
+                            title="Slide Deck"
                             src="http://www.joemur.com/Part_II_slide_deck.slides.html#"
-                            frameborder="0" 
+                            frameborder="0"
                             allowFullScreen="true"
-                            class="w-full h-[400px] md:h-[600px] rounded-lg border border-gray-700">
+                            class="w-full rounded-lg border border-gray-700 h-[350px] sm:h-[450px] md:h-[600px]">
                         </iframe>
                     </div>
                 </div>
@@ -177,7 +145,7 @@
             </div>
         </div>
     </div>
-    
+
     <script>
         // --- PARTICLE ANIMATION SCRIPT (EXISTING) ---
         const canvas = document.getElementById('particleCanvas');
@@ -280,7 +248,7 @@
 
         const baseHeight = contentContainer.scrollHeight + 1;
         contentContainer.style.maxHeight = `${baseHeight}px`;
-        
+
         contentPanels.forEach(panel => panel.classList.add('hidden'));
 
         navLinks.forEach(link => {
@@ -296,11 +264,11 @@
                     navLink.classList.remove('font-bold', 'text-white');
                     navLink.classList.add('text-gray-300');
                 });
-                
+
                 if (isAlreadyActive) {
                     isAnimating = true;
                     contentContainer.style.maxHeight = `${baseHeight}px`;
-                    
+
                     contentContainer.addEventListener('transitionend', function hidePanel() {
                         targetPanel.classList.add('hidden');
                         isAnimating = false;
@@ -339,7 +307,7 @@
                 });
                 link.classList.add('font-bold', 'text-white');
                 link.classList.remove('text-gray-300');
-                
+
                 projectViewers.forEach(viewer => {
                     if (viewer.id === targetId) {
                         viewer.classList.remove('hidden');
@@ -357,39 +325,7 @@
         initParticles();
         animateParticles();
 
-        
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        
-
-
-
-
-
-
-
-
-
-
     </script>
-
-
-
-
-
 
 <script type="text/babel">
     const { useState, useEffect, useRef, useMemo } = React;
