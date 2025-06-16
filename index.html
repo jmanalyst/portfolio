@@ -3,347 +3,255 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>JOEMUR</title>
+    <title>Animated Particle Background</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700&display=swap" rel="stylesheet">
     <style>
-        /* Custom styles for the page and canvas */
+        /* Basic CSS reset and styling for the body */
         body {
-            font-family: 'Inter', sans-serif;
-            background-color: #ffffff; /* Changed background to white */
-            color: #1f2937; /* Changed text color to a dark gray */
-            overflow: hidden; /* Prevent scrollbars from appearing */
             margin: 0;
-            padding: 0;
+            overflow: hidden;
+            /* Using black for the background color */
+            background-color: #000000;
+            font-family: 'Inter', sans-serif;
+            color: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            text-align: center;
         }
 
+        /* Styling for the canvas to make it a fullscreen background */
         canvas {
             display: block;
             position: absolute;
             top: 0;
             left: 0;
-            z-index: 1; /* Place canvas behind the UI */
+            z-index: -1; /* Place canvas behind other content */
         }
 
-        /* Styling for the UI elements on top of the canvas */
-        .ui-container {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 2; /* UI is on top */
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            pointer-events: none; /* Allow mouse events to pass through to the canvas by default */
-            text-align: center;
-        }
-        
-        /* Updated to allow clicks on the menu and better content display */
-        .ui-content {
-            background-color: rgba(255, 255, 255, 0.5); /* Semi-transparent light backdrop for text */
+        /* Styling for the content box from the new code */
+        .content {
+            background-color: rgba(20, 20, 25, 0.7); /* Slightly adjusted for dark bg */
             backdrop-filter: blur(10px);
             -webkit-backdrop-filter: blur(10px);
-            padding: 1.5rem; /* Reduced padding for mobile */
+            padding: 1.5rem;
             border-radius: 1.5rem;
-            border: 1px solid rgba(0, 0, 0, 0.05); /* Subtle dark border */
-            pointer-events: auto; /* Make this section clickable */
-            width: 90%; /* Use percentage width for responsiveness */
-            max-width: 900px; /* Keep max-width for larger screens */
-            max-height: 85vh; /* Increased max height */
-            overflow-y: auto; /* Allow scrolling for long content */
-            transition: max-height 0.5s ease-in-out; /* Smooth transition for max-height */
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            width: 90%;
+            max-width: 900px;
+            max-height: 85vh;
+            overflow-y: auto;
+            transition: max-height 0.5s ease-in-out;
         }
 
         /* Custom scrollbar for a cleaner look */
-        .ui-content::-webkit-scrollbar {
+        .content::-webkit-scrollbar {
             width: 8px;
         }
-        .ui-content::-webkit-scrollbar-track {
-            background: rgba(0,0,0,0.05);
+        .content::-webkit-scrollbar-track {
+            background: rgba(255,255,255,0.05);
             border-radius: 10px;
         }
-        .ui-content::-webkit-scrollbar-thumb {
-            background: rgba(0,0,0,0.2);
+        .content::-webkit-scrollbar-thumb {
+            background: rgba(255,255,255,0.2);
             border-radius: 10px;
         }
-        .ui-content::-webkit-scrollbar-thumb:hover {
-            background: rgba(0,0,0,0.3);
+        .content::-webkit-scrollbar-thumb:hover {
+            background: rgba(255,255,255,0.3);
         }
 
         /* Responsive adjustments for larger screens */
         @media (min-width: 640px) {
-            .ui-content {
+            .content {
                 padding: 2rem 3rem;
             }
         }
-
     </style>
 </head>
 <body>
+    <!-- The canvas element where the animation will be drawn -->
+    <canvas id="particleCanvas"></canvas>
 
-    <!-- The canvas where the abstract art is rendered -->
-    <canvas id="artCanvas"></canvas>
+    <!-- Content box to display over the animated background -->
+    <div class="content">
+        <!-- Name Heading -->
+        <h1 class="text-1xl sm:text-2xl font-bold mb-6 tracking-tight text-white">JOSE MURGUIA</h1>
+        
+        <!-- Navigation Menu -->
+        <nav>
+            <ul class="flex flex-col sm:flex-row justify-center gap-y-4 sm:gap-x-10 md:gap-x-16">
+                <li><a href="#" class="nav-link text-lg text-gray-300 hover:text-white transition-colors duration-300" data-target="home-content">ABOUT</a></li>
+                <li><a href="#" class="nav-link text-lg text-gray-300 hover:text-white transition-colors duration-300" data-target="projects-content">PROJECTS</a></li>
+                <li><a href="#" class="nav-link text-lg text-gray-300 hover:text-white transition-colors duration-300" data-target="contact-content">CONTACT</a></li>
+            </ul>
+        </nav>
+        <!-- End Navigation Menu -->
 
-    <!-- UI elements that sit on top of the canvas -->
-    <div class="ui-container">
-        <div class="ui-content">
-            <!-- Added Name Heading -->
-            <h1 class="text-3xl sm:text-4xl font-bold mb-6 tracking-tight">JOSE MURGUIA</h1>
-            
-            <!-- Navigation Menu -->
-            <nav>
-                <ul class="flex flex-col sm:flex-row justify-center gap-y-4 sm:gap-x-10 md:gap-x-16">
-                    <li><a href="#" class="nav-link text-lg text-gray-600 hover:text-black transition-colors duration-300" data-target="home-content">Home</a></li>
-                    <li><a href="#" class="nav-link text-lg text-gray-600 hover:text-black transition-colors duration-300" data-target="projects-content">Projects</a></li>
-                    <li><a href="#" class="nav-link text-lg text-gray-600 hover:text-black transition-colors duration-300" data-target="contact-content">Contact</a></li>
-                </ul>
-            </nav>
-            <!-- End Navigation Menu -->
-
-            <!-- Content Sections that appear on click -->
-            <div id="page-content-container" class="mt-6">
-                <div id="home-content" class="page-content hidden p-4 text-center">
-                    <h2 class="text-xl font-bold">-</h2>
-                    <p class="mt-2 text-sm">Web Development, AI Intergration, Data Analyitcs, SQL, Python and Power BI.</p>
+        <!-- Content Sections that appear on click -->
+        <div id="page-content-container" class="mt-6">
+            <div id="home-content" class="page-content hidden p-4 text-center">
+                <h2 class="text-xl font-bold">[]</h2>
+                <p class="mt-2 text-sm text-gray-200">Web Development and Data Analytics</p>
+            </div>
+            <div id="projects-content" class="page-content hidden p-4 text-left">
+                <h2 class="text-xl font-bold text-center">[]</h2>
+                <p class="mt-2 text-center text-sm text-gray-300">Click a project below to view it.</p>
+                <!-- Interactive Project List -->
+                <div class="flex flex-col sm:flex-row justify-center items-center gap-y-3 sm:gap-x-6 my-4">
+                    <a href="#" class="project-link font-bold text-white" data-target="power-bi-viewer">Power BI Report</a>
+                    <a href="#" class="project-link text-gray-300 hover:text-white" data-target="joemur-viewer">Python: Data Exploration Part I</a>
+                    <a href="#" class="project-link text-gray-300 hover:text-white" data-target="slides-viewer">Data Exploration Part II</a>
                 </div>
-                <div id="projects-content" class="page-content hidden p-4 text-left">
-                    <h2 class="text-xl font-bold text-center">Projects</h2>
-                    <p class="mt-2 text-center text-sm">Click a project below to view it.</p>
-                    <!-- Interactive Project List -->
-                    <div class="flex flex-col sm:flex-row justify-center items-center gap-y-3 sm:gap-x-6 my-4">
-                        <a href="#" class="project-link font-bold text-black" data-target="power-bi-viewer">Power BI Report</a>
-                        <a href="#" class="project-link text-gray-600" data-target="joemur-viewer">Python: Data Exploration Part I</a>
-                        <a href="#" class="project-link text-gray-600" data-target="slides-viewer">Data Exploration Part II</a>
-                    </div>
 
-                    <!-- Container for the different project iframes -->
-                    <div id="project-viewer-container">
-                        <!-- Power BI Embed Section -->
-                        <div id="power-bi-viewer" class="project-viewer">
-                            <iframe 
-                                title="Power BI Report" 
-                                src="https://app.powerbi.com/view?r=eyJrIjoiNTZhMDRmM2ItOTg0MC00YTFmLWJjYjUtNmEwYzRiNjEzZDAwIiwidCI6IjAxOGU1Y2Y3LTMxZTUtNDYwYS05ODlmLTcyMDRmZDUyOGI1YSJ9" 
-                                frameborder="0" 
-                                allowFullScreen="true"
-                                class="w-full h-[400px] md:h-[650px] rounded-lg border border-gray-200">
-                            </iframe>
-                        </div>
-                         <!-- JoeMur.com Embed Section -->
-                        <div id="joemur-viewer" class="project-viewer hidden">
-                            <iframe 
-                                title="JoeMur Exploration" 
-                                src="https://jmanalyst.github.io/portfolio/Part_I_exploration.html"
-                                frameborder="0" 
-                                allowFullScreen="true"
-                                class="w-full h-[400px] md:h-[650px] rounded-lg border border-gray-200">
-                            </iframe>
-                        </div>
-                        <!-- New Slide Deck Embed Section -->
-                        <div id="slides-viewer" class="project-viewer hidden">
-                             <iframe 
-                                title="Slide Deck" 
-                                src="https://jmanalyst.github.io/portfolio/Part_II_slide_deck.slides.html"
-                                frameborder="0" 
-                                allowFullScreen="true"
-                                class="w-full h-[400px] md:h-[650px] rounded-lg border border-gray-200">
-                            </iframe>
-                        </div>
+                <!-- Container for the different project iframes -->
+                <div id="project-viewer-container">
+                    <!-- Power BI Embed Section -->
+                    <div id="power-bi-viewer" class="project-viewer">
+                        <iframe 
+                            title="Power BI Report" 
+                            src="https://app.powerbi.com/view?r=eyJrIjoiNTZhMDRmM2ItOTg0MC00YTFmLWJjYjUtNmEwYzRiNjEzZDAwIiwidCI6IjAxOGU1Y2Y3LTMxZTUtNDYwYS05ODlmLTcyMDRmZDUyOGI1YSJ9" 
+                            frameborder="0" 
+                            allowFullScreen="true"
+                            class="w-full h-[400px] md:h-[500px] rounded-lg border border-gray-700">
+                        </iframe>
                     </div>
-                </div>
-                <div id="contact-content" class="page-content hidden p-4 text-center">
-                    <h2 class="text-xl font-bold">Get in Touch</h2>
-                    <div class="mt-4 space-y-2 text-sm">
-                        <p><strong>Location:</strong> Houston, Texas</p>
-                        <p><strong>Phone:</strong> (281) 772-1495</p>
-                        <p><strong>Email:</strong> murguia.joe@gmail.com</p>
+                     <!-- JoeMur.com Embed Section -->
+                    <div id="joemur-viewer" class="project-viewer hidden">
+                        <iframe 
+                            title="JoeMur Exploration" 
+                            src="http://www.joemur.com/Part_I_exploration.html"
+                            frameborder="0" 
+                            allowFullScreen="true"
+                            class="w-full h-[400px] md:h-[650px] rounded-lg border border-gray-700">
+                        </iframe>
+                    </div>
+                    <!-- New Slide Deck Embed Section -->
+                    <div id="slides-viewer" class="project-viewer hidden">
+                         <iframe 
+                            title="Slide Deck" 
+                            src="http://www.joemur.com/Part_II_slide_deck.slides.html#/"
+                            frameborder="0" 
+                            allowFullScreen="true"
+                            class="w-full h-[400px] md:h-[600px] rounded-lg border border-gray-700">
+                        </iframe>
                     </div>
                 </div>
             </div>
-
+            <div id="contact-content" class="page-content hidden p-4 text-center">
+                <h2 class="text-xl font-bold">GET IN TOUCH</h2>
+                <div class="mt-4 space-y-2 text-sm text-gray-200">
+                    <p><strong>Location:</strong> Houston, Texas</p>
+                    <p><strong>Phone:</strong> (281) 772-1495</p>
+                    <p><strong>Email:</strong> murguia.joe@gmail.com</p>
+                </div>
+            </div>
         </div>
     </div>
     
     <script>
-        // --- Canvas & Context Setup ---
-        const canvas = document.getElementById('artCanvas');
+        // --- PARTICLE ANIMATION SCRIPT (EXISTING) ---
+        const canvas = document.getElementById('particleCanvas');
         const ctx = canvas.getContext('2d');
+        let width = canvas.width = window.innerWidth;
+        let height = canvas.height = window.innerHeight;
+        const particleCount = 400;
+        const particles = [];
+        const colors = ['#FFFFFF', '#F5F5F5', '#E8E8E8', '#DCDCDC', '#F0F0F0'];
+        let centralRadius = Math.min(width, height) * 0.4;
 
-        // --- State and Configuration ---
-        let width, height; // Will be set on resize
-        let particles = [];
-        const particleCount = 300; // OPTIMIZATION: Reduced particle count
-        const connectionDistance = 100;
-        let animationFrameId;
-
-        // --- OPTIMIZATION: Grid System Configuration ---
-        const cellSize = 100; // Should be >= connectionDistance
-        let grid;
-
-        // Mouse position tracking
-        const mouse = {
-            x: null,
-            y: null,
-            radius: 150
-        };
-        
-        // --- Particle Class ---
         class Particle {
             constructor() {
-                // OPTIMIZATION: Added unique ID for pair checking
-                this.id = Math.random();
-                this.x = Math.random() * width;
-                this.y = Math.random() * height;
-                this.size = Math.random() * 2 + 1;
-                this.baseSpeed = 0.5;
-                this.speedX = (Math.random() * 2 - 1) * this.baseSpeed;
-                this.speedY = (Math.random() * 2 - 1) * this.baseSpeed;
-                
-                const hue = Math.random() * 40 + 180;
-                const saturation = Math.random() * 30 + 70;
-                const lightness = Math.random() * 40 + 30;
-                this.color = `hsl(${hue}, ${saturation}%, ${lightness}%)`;
+                this.centerX = width / 2;
+                this.centerY = height / 2;
+                this.reset();
             }
-
-            update() {
-                let dx = this.x - mouse.x;
-                let dy = this.y - mouse.y;
-                let distance = Math.sqrt(dx * dx + dy * dy);
-                if (distance < mouse.radius) {
-                    const forceDirectionX = dx / distance;
-                    const forceDirectionY = dy / distance;
-                    const force = (mouse.radius - distance) / mouse.radius;
-                    this.x += forceDirectionX * force * 3;
-                    this.y += forceDirectionY * force * 3;
-                } else {
-                    this.x += this.speedX;
-                    this.y += this.speedY;
+            createShape() {
+                const sides = Math.floor(Math.random() * 3 + 3);
+                const shape = [];
+                for (let i = 0; i < sides; i++) {
+                    const angle = (i / sides) * Math.PI * 2;
+                    const radius = this.baseSize * (0.6 + Math.random() * 0.4);
+                    shape.push({ x: Math.cos(angle) * radius, y: Math.sin(angle) * radius });
                 }
-
-                if (this.x > width) this.x = 0;
-                if (this.x < 0) this.x = width;
-                if (this.y > height) this.y = 0;
-                if (this.y < 0) this.y = height;
+                return shape;
             }
-
+            reset() {
+                this.baseSize = Math.random() * 3 + 1.5;
+                this.maxRadius = centralRadius * (1.2 + Math.random() * 0.5);
+                this.radius = this.maxRadius;
+                this.angle = Math.random() * Math.PI * 2;
+                this.angularVelocity = (Math.random() - 0.5) * 0.005 + 0.0025;
+                this.baseRadiusVelocity = Math.random() * 0.025 + 0.025;
+                const fullColor = colors[Math.floor(Math.random() * colors.length)];
+                this.rgbColor = fullColor.match(/\w\w/g).map(x => parseInt(x, 16));
+                this.rotation = Math.random() * Math.PI * 2;
+                this.rotationSpeed = (Math.random() - 0.5) * 0.005;
+                this.shape = this.createShape();
+            }
+            update() {
+                const depth = this.radius / this.maxRadius;
+                this.scale = (1.5 - depth) * 1.5;
+                this.opacity = Math.max(0, this.scale / 2.25);
+                this.angle += this.angularVelocity;
+                this.radius -= this.baseRadiusVelocity * this.scale;
+                this.x = this.centerX + Math.cos(this.angle) * this.radius;
+                this.y = this.centerY + Math.sin(this.angle) * this.radius;
+                this.rotation += this.rotationSpeed;
+                if (this.radius < 1) {
+                    this.reset();
+                }
+            }
             draw() {
-                ctx.fillStyle = this.color;
+                ctx.save();
+                ctx.translate(this.x, this.y);
+                ctx.rotate(this.rotation);
+                ctx.scale(this.scale, this.scale);
+                ctx.fillStyle = `rgba(${this.rgbColor[0]}, ${this.rgbColor[1]}, ${this.rgbColor[2]}, ${this.opacity})`;
                 ctx.beginPath();
-                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.moveTo(this.shape[0].x, this.shape[0].y);
+                for (let i = 1; i < this.shape.length; i++) {
+                    ctx.lineTo(this.shape[i].x, this.shape[i].y);
+                }
+                ctx.closePath();
                 ctx.fill();
+                ctx.restore();
             }
         }
-
-        // --- Core Functions ---
-        function init() {
-            particles = [];
+        function initParticles() {
             for (let i = 0; i < particleCount; i++) {
                 particles.push(new Particle());
             }
         }
-        
-        // --- OPTIMIZATION: New functions for the grid system ---
-        function updateGrid() {
-            grid = new Map();
-            for (const particle of particles) {
-                const cellX = Math.floor(particle.x / cellSize);
-                const cellY = Math.floor(particle.y / cellSize);
-                const key = `${cellX},${cellY}`;
-                if (!grid.has(key)) {
-                    grid.set(key, []);
-                }
-                grid.get(key).push(particle);
-            }
-        }
-
-        // --- OPTIMIZATION: Rewritten connectParticles function ---
-        function connectParticles() {
-            const checkedPairs = new Set();
-            for (const particle of particles) {
-                const cellX = Math.floor(particle.x / cellSize);
-                const cellY = Math.floor(particle.y / cellSize);
-
-                // Check current cell and 8 neighbors
-                for (let offsetX = -1; offsetX <= 1; offsetX++) {
-                    for (let offsetY = -1; offsetY <= 1; offsetY++) {
-                        const neighborKey = `${cellX + offsetX},${cellY + offsetY}`;
-                        if (grid.has(neighborKey)) {
-                            const neighborParticles = grid.get(neighborKey);
-                            for (const otherParticle of neighborParticles) {
-                                if (particle === otherParticle) continue;
-
-                                const pairKey = particle.id < otherParticle.id ? `${particle.id}-${otherParticle.id}` : `${otherParticle.id}-${otherParticle.id}`;
-                                if (checkedPairs.has(pairKey)) continue;
-
-                                const dx = particle.x - otherParticle.x;
-                                const dy = particle.y - otherParticle.y;
-                                const distance = Math.sqrt(dx * dx + dy * dy);
-
-                                if (distance < connectionDistance) {
-                                    ctx.beginPath();
-                                    const opacity = 1 - (distance / connectionDistance);
-                                    ctx.strokeStyle = particle.color.replace('hsl', 'hsla').replace(')', `, ${opacity})`);
-                                    ctx.lineWidth = 0.5;
-                                    ctx.moveTo(particle.x, particle.y);
-                                    ctx.lineTo(otherParticle.x, otherParticle.y);
-                                    ctx.stroke();
-                                }
-                                checkedPairs.add(pairKey);
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
-
-        // The main animation loop
-        function animate() {
-            ctx.fillStyle = 'rgba(255, 255, 255, 0.2)';
+        function animateParticles() {
+            ctx.fillStyle = '#000000';
             ctx.fillRect(0, 0, width, height);
-
-            // Update positions and draw each particle
             particles.forEach(p => {
                 p.update();
                 p.draw();
             });
-
-            // OPTIMIZATION: Update the grid before connecting particles
-            updateGrid();
-            connectParticles();
-
-            animationFrameId = requestAnimationFrame(animate);
-        }
-        
-        // --- Event Listeners ---
-        function handleResize() {
-            width = window.innerWidth;
-            height = window.innerHeight;
-            canvas.width = width;
-            canvas.height = height;
-            init();
+            requestAnimationFrame(animateParticles);
         }
 
-        window.addEventListener('mousemove', (event) => {
-            mouse.x = event.x;
-            mouse.y = event.y;
+        window.addEventListener('resize', () => {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+            centralRadius = Math.min(width, height) * 0.4;
+            particles.forEach(p => {
+                p.centerX = width / 2;
+                p.centerY = height / 2;
+            });
         });
 
-        window.addEventListener('mouseout', () => {
-            mouse.x = null;
-            mouse.y = null;
-        });
-        
-        // --- Navigation Logic ---
-        const uiContent = document.querySelector('.ui-content');
+        // --- UI NAVIGATION SCRIPT (NEW) ---
+        const contentContainer = document.querySelector('.content');
         const navLinks = document.querySelectorAll('.nav-link');
         const contentPanels = document.querySelectorAll('.page-content');
         let isAnimating = false;
 
-        const baseHeight = uiContent.scrollHeight + 1; // Add 1px buffer to prevent scrollbar
-        uiContent.style.maxHeight = `${baseHeight}px`;
+        const baseHeight = contentContainer.scrollHeight + 1;
+        contentContainer.style.maxHeight = `${baseHeight}px`;
         
         contentPanels.forEach(panel => panel.classList.add('hidden'));
 
@@ -357,38 +265,38 @@
                 const isAlreadyActive = link.classList.contains('font-bold');
 
                 navLinks.forEach(navLink => {
-                    navLink.classList.remove('font-bold', 'text-black');
-                    navLink.classList.add('text-gray-600');
+                    navLink.classList.remove('font-bold', 'text-white');
+                    navLink.classList.add('text-gray-300');
                 });
                 
                 if (isAlreadyActive) {
                     isAnimating = true;
-                    uiContent.style.maxHeight = `${baseHeight}px`;
+                    contentContainer.style.maxHeight = `${baseHeight}px`;
                     
-                    uiContent.addEventListener('transitionend', function hidePanel() {
+                    contentContainer.addEventListener('transitionend', function hidePanel() {
                         targetPanel.classList.add('hidden');
                         isAnimating = false;
-                        uiContent.removeEventListener('transitionend', hidePanel);
+                        contentContainer.removeEventListener('transitionend', hidePanel);
                     }, { once: true });
                 } else {
                     isAnimating = true;
                     contentPanels.forEach(panel => panel.classList.add('hidden'));
                     targetPanel.classList.remove('hidden');
-                    link.classList.add('font-bold', 'text-black');
-                    link.classList.remove('text-gray-600');
+                    link.classList.add('font-bold', 'text-white');
+                    link.classList.remove('text-gray-300');
 
-                    const newHeight = uiContent.scrollHeight;
-                    uiContent.style.maxHeight = `${newHeight}px`;
+                    const newHeight = contentContainer.scrollHeight;
+                    contentContainer.style.maxHeight = `${newHeight}px`;
 
-                     uiContent.addEventListener('transitionend', function onExpandEnd() {
+                     contentContainer.addEventListener('transitionend', function onExpandEnd() {
                         isAnimating = false;
-                        uiContent.removeEventListener('transitionend', onExpandEnd);
+                        contentContainer.removeEventListener('transitionend', onExpandEnd);
                     }, { once: true });
                 }
             });
         });
 
-        // --- Sub-Navigation for Projects ---
+        // Sub-Navigation for Projects
         const projectLinks = document.querySelectorAll('.project-link');
         const projectViewers = document.querySelectorAll('.project-viewer');
 
@@ -397,15 +305,13 @@
                 e.preventDefault();
                 const targetId = link.getAttribute('data-target');
 
-                // Update visual state of project links
                 projectLinks.forEach(projLink => {
-                    projLink.classList.remove('font-bold', 'text-black');
-                    projLink.classList.add('text-gray-600');
+                    projLink.classList.remove('font-bold', 'text-white');
+                    projLink.classList.add('text-gray-300');
                 });
-                link.classList.add('font-bold', 'text-black');
-                link.classList.remove('text-gray-600');
+                link.classList.add('font-bold', 'text-white');
+                link.classList.remove('text-gray-300');
                 
-                // Show the correct project viewer
                 projectViewers.forEach(viewer => {
                     if (viewer.id === targetId) {
                         viewer.classList.remove('hidden');
@@ -414,17 +320,14 @@
                     }
                 });
 
-                // Recalculate and set height for smooth animation
-                 const newHeight = uiContent.scrollHeight;
-                 uiContent.style.maxHeight = `${newHeight}px`;
+                 const newHeight = contentContainer.scrollHeight;
+                 contentContainer.style.maxHeight = `${newHeight}px`;
             });
         });
 
-
-        // --- Start the show ---
-        window.addEventListener('resize', handleResize);
-        handleResize();
-        animate();
+        // --- Start the animation ---
+        initParticles();
+        animateParticles();
     </script>
 
 </body>
