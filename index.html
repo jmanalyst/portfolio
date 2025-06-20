@@ -50,7 +50,6 @@
         .animate-bounce-slow {
             animation: bounce 2s infinite;
         }
-        /* === MODIFICATION: CSS for Scroll Animations === */
         .fade-in-element {
             opacity: 0;
             transform: translateY(20px);
@@ -70,19 +69,40 @@
                 <div class="flex-shrink-0">
                     <a href="#" class="text-xl font-bold tracking-tight text-white">JOSE MURGUIA</a>
                 </div>
-                <ul class="flex items-center space-x-6 sm:space-x-10">
-                    <li><a href="#hero" class="nav-link text-base text-gray-300 hover:text-white transition-colors duration-300">HOME</a></li>
-                    <li><a href="#about" class="nav-link text-base text-gray-300 hover:text-white transition-colors duration-300">ABOUT</a></li>
-                    <li><a href="#projects" class="nav-link text-base text-gray-300 hover:text-white transition-colors duration-300">PROJECTS</a></li>
-                    <li><a href="#contact" class="nav-link text-base text-gray-300 hover:text-white transition-colors duration-300">CONTACT</a></li>
-                </ul>
+                <div class="hidden md:block">
+                    <ul class="flex items-center space-x-10">
+                        <li><a href="#hero" class="nav-link text-base text-gray-300 hover:text-white transition-colors duration-300">HOME</a></li>
+                        <li><a href="#about" class="nav-link text-base text-gray-300 hover:text-white transition-colors duration-300">ABOUT</a></li>
+                        <li><a href="#projects" class="nav-link text-base text-gray-300 hover:text-white transition-colors duration-300">PROJECTS</a></li>
+                        <li><a href="#contact" class="nav-link text-base text-gray-300 hover:text-white transition-colors duration-300">CONTACT</a></li>
+                    </ul>
+                </div>
+                <div class="md:hidden">
+                    <button id="mobile-menu-button" class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white">
+                        <span class="sr-only">Open main menu</span>
+                        <svg id="hamburger-icon" class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                        </svg>
+                        <svg id="close-icon" class="hidden h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </button>
+                </div>
             </div>
         </nav>
+        <div id="mobile-menu" class="hidden md:hidden">
+            <ul class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+                <li><a href="#hero" class="nav-link-mobile block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-white hover:bg-gray-700">HOME</a></li>
+                <li><a href="#about" class="nav-link-mobile block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-white hover:bg-gray-700">ABOUT</a></li>
+                <li><a href="#projects" class="nav-link-mobile block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-white hover:bg-gray-700">PROJECTS</a></li>
+                <li><a href="#contact" class="nav-link-mobile block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-white hover:bg-gray-700">CONTACT</a></li>
+            </ul>
+        </div>
     </header>
 
     <main>
 
-        <section id="hero" class="relative h-[85vh] flex flex-col items-center justify-center text-center overflow-hidden">
+        <section id="hero" class="relative h-[85vh] flex flex-col items-center justify-center text-center overflow-hidden px-4">
             <canvas id="particleCanvas"></canvas>
             <div class="relative z-10">
                 <h1 class="text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight text-white">JOSE MURGUIA</h1>
@@ -97,10 +117,10 @@
             </div>
         </section>
 
-        <section id="about" class="py-20 sm:py-24 bg-black">
+        <section id="about" class="py-16 sm:py-24 bg-black">
             <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
                 <div class="max-w-3xl mx-auto text-center text-gray-300 text-base fade-in-element">
-                    <p class="text-xl text-white mb-4 font-medium">
+                    <p class="text-xl sm:text-2xl text-white mb-4 font-medium">
                         I translate raw data into strategic advantage.
                     </p>
                     <p class="mb-4 leading-relaxed">
@@ -117,28 +137,32 @@
             </div>
         </section>
 
-        <section id="projects" class="py-20 sm:py-24 bg-gray-900/50">
+        <section id="projects" class="py-16 sm:py-24 bg-gray-900/50">
              <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
                 <h2 class="text-3xl font-bold tracking-tight fade-in-element">Showcasing a Versatile Skill Set</h2>
                 <div class="max-w-3xl mx-auto mt-4 text-center text-gray-300 fade-in-element">
                     <p class="mb-4 leading-relaxed">
                         These projects highlight my capabilities across the full spectrum of data analysis—from in-depth, code-based exploration to polished, interactive business intelligence dashboards.
                     </p>
-                    <p class="mb-4 leading-relaxed">
-                        The two-part <strong>Python Data Exploration</strong> project demonstrates the complete analytical lifecycle: it begins with a detailed, technical notebook (Part I) and concludes with a clear, stakeholder-ready presentation of the findings (Part II).
-                    </p>
-                     <p class="mb-4 leading-relaxed">
-                        Separately, the <strong>Power BI Report</strong> showcases my ability to develop user-friendly, interactive dashboards that allow for dynamic filtering and data discovery, providing at-a-glance insights for business users.
-                    </p>
                 </div>
 
                 <div class="mt-10 fade-in-element">
-                    <div class="flex justify-center items-center gap-x-6 sm:gap-x-10 border-b border-gray-700">
-                        <a href="#" class="project-link font-bold text-white py-3 border-b-2 border-white" data-target="power-bi-viewer">Power BI Report</a>
-                        <a href="#" class="project-link text-gray-400 hover:text-white py-3 border-b-2 border-transparent" data-target="joemur-viewer">Python Part I</a>
-                        <a href="#" class="project-link text-gray-400 hover:text-white py-3 border-b-2 border-transparent" data-target="slides-viewer">Python Part II</a>
+                    <div class="flex flex-col sm:flex-row justify-center items-center gap-y-4 sm:gap-x-10 border-b border-gray-700 pb-4 sm:border-b-0 sm:pb-0">
+                        <a href="#" class="project-link font-bold text-white" data-target="power-bi-viewer">Power BI Report</a>
+                        <a href="#" class="project-link text-gray-300 hover:text-white" data-target="joemur-viewer">Python: Data Exploration Part I</a>
+                        <a href="#" class="project-link text-gray-300 hover:text-white" data-target="slides-viewer">Data Exploration Part II</a>
                     </div>
                     <div id="project-viewer-container" class="mt-8">
+                         <div class="px-2 text-left text-gray-400 mb-4 fade-in-element project-description" data-project="power-bi-viewer">
+                           <p><strong>Power BI Report:</strong> An example of a user-friendly, interactive dashboard that allows for dynamic filtering and data discovery, providing at-a-glance insights for business users.</p>
+                        </div>
+                        <div class="px-2 text-left text-gray-400 mb-4 hidden fade-in-element project-description" data-project="joemur-viewer">
+                           <p><strong>Python Data Exploration Part I:</strong> A look at the complete analytical lifecycle, beginning with a detailed, technical notebook used to clean data and uncover initial patterns.</p>
+                        </div>
+                        <div class="px-2 text-left text-gray-400 mb-4 hidden fade-in-element project-description" data-project="slides-viewer">
+                           <p><strong>Data Exploration Part II:</strong> The conclusion of the analysis, where key findings are distilled into a clear, stakeholder-ready presentation designed to communicate the story behind the numbers.</p>
+                        </div>
+
                         <div id="power-bi-viewer" class="project-viewer">
                             <iframe title="Power BI Report" src="https://app.powerbi.com/view?r=eyJrIjoiNTZhMDRmM2ItOTg0MC00YTFmLWJjYjUtNmEwYzRiNjEzZDAwIiwidCI6IjAxOGU1Y2Y3LTMxZTUtNDYwYS05ODlmLTcyMDRmZDUyOGI1YSJ9" frameborder="0" allowFullScreen="true" class="w-full rounded-lg border border-gray-700 h-[60vh]"></iframe>
                         </div>
@@ -146,14 +170,14 @@
                             <iframe title="JoeMur Exploration" src="http://www.joemur.com/Part_I_exploration.html" frameborder="0" allowFullScreen="true" class="w-full rounded-lg border border-gray-700 h-[60vh]"></iframe>
                         </div>
                         <div id="slides-viewer" class="project-viewer hidden">
-                            <iframe title="Slide Deck" src="http://www.joemur.com/Part_II_slide_deck.slides.html" frameborder="0" allowFullScreen="true" class="w-full rounded-lg border border-gray-700 h-[60vh]"></iframe>
+                            <iframe title="Slide Deck" src="http://www.joemur.com/Part_II_slide_deck.slides.html#" frameborder="0" allowFullScreen="true" class="w-full rounded-lg border border-gray-700 h-[60vh]"></iframe>
                         </div>
                     </div>
                 </div>
             </div>
         </section>
 
-        <section id="contact" class="py-20 sm:py-24 bg-black">
+        <section id="contact" class="py-16 sm:py-24 bg-black">
             <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
                  <h2 class="text-3xl font-bold tracking-tight fade-in-element">Contact Me</h2>
                  <p class="mt-4 text-lg text-gray-300 fade-in-element">Let's connect and bring your data to life.</p>
@@ -169,7 +193,27 @@
     
     <script>
         window.addEventListener('DOMContentLoaded', () => {
-        
+            // --- Mobile Menu Logic ---
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+            const hamburgerIcon = document.getElementById('hamburger-icon');
+            const closeIcon = document.getElementById('close-icon');
+            
+            mobileMenuButton.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+                hamburgerIcon.classList.toggle('hidden');
+                closeIcon.classList.toggle('hidden');
+            });
+            
+            // Close mobile menu when a link is clicked
+            document.querySelectorAll('.nav-link-mobile').forEach(link => {
+                link.addEventListener('click', () => {
+                    mobileMenu.classList.add('hidden');
+                    hamburgerIcon.classList.remove('hidden');
+                    closeIcon.classList.add('hidden');
+                });
+            });
+
             // --- Particle Animation Script ---
             const heroSection = document.getElementById('hero');
             const canvas = document.getElementById('particleCanvas');
@@ -178,7 +222,7 @@
             canvas.height = heroSection.clientHeight;
             let width = canvas.width;
             let height = canvas.height;
-            const particleCount = 400;
+            const particleCount = 200; // Reduced for better mobile performance
             const particles = [];
             const colors = ['#FFFFFF', '#F5F5F5', '#E8E8E8', '#DCDCDC', '#F0F0F0'];
             let centralRadius = Math.min(width, height) * 0.4;
@@ -209,21 +253,24 @@
             // --- Project Tabs & Nav Scroll Logic ---
             const projectLinks = document.querySelectorAll('.project-link');
             const projectViewers = document.querySelectorAll('.project-viewer');
+            const projectDescriptions = document.querySelectorAll('.project-description');
+
             projectLinks.forEach(link => {
                 link.addEventListener('click', (e) => {
                     e.preventDefault();
                     const targetId = link.getAttribute('data-target');
                     projectLinks.forEach(projLink => {
-                        projLink.classList.remove('font-bold', 'text-white', 'border-white');
-                        projLink.classList.add('text-gray-400', 'border-transparent');
+                        projLink.classList.remove('font-bold', 'text-white');
+                        projLink.classList.add('text-gray-300');
                     });
-                    link.classList.add('font-bold', 'text-white', 'border-white');
-                    link.classList.remove('text-gray-400', 'border-transparent');
-                    projectViewers.forEach(viewer => {
-                        viewer.id === targetId ? viewer.classList.remove('hidden') : viewer.classList.add('hidden');
-                    });
+                    link.classList.add('font-bold', 'text-white');
+                    link.classList.remove('text-gray-300');
+
+                    projectViewers.forEach(viewer => { viewer.id === targetId ? viewer.classList.remove('hidden') : viewer.classList.add('hidden'); });
+                    projectDescriptions.forEach(desc => { desc.getAttribute('data-project') === targetId ? desc.classList.remove('hidden') : desc.classList.add('hidden'); });
                 });
             });
+
             const sections = document.querySelectorAll('main section');
             const navLi = document.querySelectorAll('header nav ul li a');
             window.addEventListener('scroll', ()=> {
@@ -242,18 +289,16 @@
                 })
             });
 
-            // === NEW: "Fade In On Scroll" Animation Logic ===
+            // --- "Fade In On Scroll" Animation Logic ---
             const observer = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
                         entry.target.classList.add('is-visible');
                     }
                 });
-            }, { threshold: 0.1 }); // Trigger when 10% of the element is visible
-
+            }, { threshold: 0.1 });
             const elementsToAnimate = document.querySelectorAll('.fade-in-element');
             elementsToAnimate.forEach(el => observer.observe(el));
-
 
             // --- D3.js Chart Logic ---
             function renderForceGraph(containerId) {
@@ -274,15 +319,12 @@
                 function update(data) {
                     const nodes = data.nodes;
                     const links = data.links;
-
                     const nodeSelection = nodeGroup.selectAll("circle").data(nodes, d => d.id);
                     nodeSelection.exit().remove();
                     nodeSelection.enter().append("circle").attr("r", 5).attr("fill", "#cbd5e1").append("title").text(d => d.id);
-
                     const linkSelection = linkGroup.selectAll("line").data(links, d => `${d.source.id}-${d.target.id}`);
                     linkSelection.exit().remove();
                     linkSelection.enter().append("line").attr("stroke-width", 1.5);
-                    
                     simulation.nodes(nodes);
                     simulation.force("link").links(links);
                     simulation.alpha(1).restart();
@@ -296,13 +338,9 @@
                 const generateData = () => {
                     const numNodes = 25;
                     const nodes = Array.from({ length: numNodes }, (_, i) => ({ id: i }));
-                    const links = Array.from({ length: numNodes - 1 }, () => ({
-                        source: Math.floor(Math.random() * numNodes),
-                        target: Math.floor(Math.random() * numNodes),
-                    })).filter(d => d.source !== d.target);
+                    const links = Array.from({ length: numNodes - 1 }, () => ({ source: Math.floor(Math.random() * numNodes), target: Math.floor(Math.random() * numNodes), })).filter(d => d.source !== d.target);
                     return { nodes, links };
                 };
-
                 update(generateData());
                 container.on("click", () => update(generateData()));
             }
@@ -322,9 +360,7 @@
                 function update(data) {
                     const xScale = d3.scaleBand().domain(data.map(d => d.label)).range([0, boundedWidth]).padding(0.2);
                     const yScale = d3.scaleLinear().domain([0, 110]).range([boundedHeight, 0]);
-
                     const bars = g.selectAll(".bar").data(data, d => d.label);
-                    
                     bars.enter().append("rect").attr("class", "bar").attr("fill", "white")
                         .attr("x", d => xScale(d.label)).attr("width", xScale.bandwidth())
                         .attr("y", boundedHeight).attr("height", 0)
@@ -334,12 +370,7 @@
                         .attr("y", d => yScale(d.value)).attr("height", d => boundedHeight - yScale(d.value));
                 }
 
-                const generateData = () => [
-                    { label: 'A', value: Math.floor(Math.random() * 100) + 10 }, { label: 'B', value: Math.floor(Math.random() * 100) + 10 },
-                    { label: 'C', value: Math.floor(Math.random() * 100) + 10 }, { label: 'D', value: Math.floor(Math.random() * 100) + 10 },
-                    { label: 'E', value: Math.floor(Math.random() * 100) + 10 }, { label: 'F', value: Math.floor(Math.random() * 100) + 10 },
-                ];
-
+                const generateData = () => [ { label: 'A', value: Math.floor(Math.random() * 100) + 10 }, { label: 'B', value: Math.floor(Math.random() * 100) + 10 }, { label: 'C', value: Math.floor(Math.random() * 100) + 10 }, { label: 'D', value: Math.floor(Math.random() * 100) + 10 }, { label: 'E', value: Math.floor(Math.random() * 100) + 10 }, { label: 'F', value: Math.floor(Math.random() * 100) + 10 }, ];
                 update(generateData());
                 container.on("click", () => update(generateData()));
             }
