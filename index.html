@@ -7,10 +7,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700&display=swap" rel="stylesheet">
 
-    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
-    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
     <script src="https://d3js.org/d3.v7.min.js"></script>
-    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
 
     <style>
         body {
@@ -36,6 +33,9 @@
             color: #ffffff;
             font-weight: 700;
         }
+        .chart-container {
+            cursor: pointer;
+        }
         @keyframes bounce {
             0%, 20%, 50%, 80%, 100% {
                 transform: translateY(0);
@@ -56,8 +56,12 @@
 
     <header class="sticky top-0 z-50 w-full">
         <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex items-center justify-end h-16">
+            <div class="flex items-center justify-between h-16">
+                 <div class="flex-shrink-0">
+                    <a href="#" class="text-xl font-bold tracking-tight text-white">JOSE MURGUIA</a>
+                </div>
                 <ul class="flex items-center space-x-6 sm:space-x-10">
+                    <li><a href="#hero" class="nav-link text-base text-gray-300 hover:text-white transition-colors duration-300">HOME</a></li>
                     <li><a href="#about" class="nav-link text-base text-gray-300 hover:text-white transition-colors duration-300">ABOUT</a></li>
                     <li><a href="#projects" class="nav-link text-base text-gray-300 hover:text-white transition-colors duration-300">PROJECTS</a></li>
                     <li><a href="#contact" class="nav-link text-base text-gray-300 hover:text-white transition-colors duration-300">CONTACT</a></li>
@@ -71,7 +75,7 @@
         <section id="hero" class="relative h-[85vh] flex flex-col items-center justify-center text-center overflow-hidden">
             <canvas id="particleCanvas"></canvas>
             <div class="relative z-10">
-                <h1 class="text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight text-white">JOSE MURGUIA</h1>
+                 <h1 class="text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight text-white">JOSE MURGUIA</h1>
                 <p class="mt-4 text-lg text-gray-300">Web Development - Data Analytics - Data Visualization</p>
             </div>
             <div class="absolute bottom-10 z-10">
@@ -97,8 +101,8 @@
                     </p>
                 </div>
                 <div class="mt-12 grid grid-cols-1 md:grid-cols-2 gap-8">
-                    <div id="force-graph-container" class="w-full h-[300px] sm:h-[350px]"></div>
-                    <div id="bar-chart-container" class="w-full h-[300px] sm:h-[350px]"></div>
+                    <div id="force-graph-container" class="chart-container w-full h-[300px] sm:h-[350px]" title="Click to restart animation"></div>
+                    <div id="bar-chart-container" class="chart-container w-full h-[300px] sm:h-[350px]" title="Click to restart animation"></div>
                 </div>
             </div>
         </section>
@@ -154,88 +158,173 @@
     </main>
     
     <script>
-        const heroSection = document.getElementById('hero');
-        const canvas = document.getElementById('particleCanvas');
-        const ctx = canvas.getContext('2d');
-        canvas.width = heroSection.clientWidth;
-        canvas.height = heroSection.clientHeight;
-        let width = canvas.width;
-        let height = canvas.height;
-        const particleCount = 400;
-        const particles = [];
-        const colors = ['#FFFFFF', '#F5F5F5', '#E8E8E8', '#DCDCDC', '#F0F0F0'];
-        let centralRadius = Math.min(width, height) * 0.4;
-        class Particle{constructor(){this.centerX=width/2;this.centerY=height/2;this.reset()}
-        createShape(){const sides=Math.floor(Math.random()*3+3);const shape=[];for(let i=0;i<sides;i++){const angle=(i/sides)*Math.PI*2;const radius=this.baseSize*(0.6+Math.random()*0.4);shape.push({x:Math.cos(angle)*radius,y:Math.sin(angle)*radius})}
-        return shape}
-        reset(){this.baseSize=Math.random()*3+1.5;this.maxRadius=centralRadius*(1.2+Math.random()*0.5);this.radius=this.maxRadius;this.angle=Math.random()*Math.PI*2;this.angularVelocity=(Math.random()-0.5)*0.005+0.0025;this.baseRadiusVelocity=Math.random()*0.025+0.025;const fullColor=colors[Math.floor(Math.random()*colors.length)];this.rgbColor=fullColor.match(/\w\w/g).map(x=>parseInt(x,16));this.rotation=Math.random()*Math.PI*2;this.rotationSpeed=(Math.random()-0.5)*0.005;this.shape=this.createShape()}
-        update(){const depth=this.radius/this.maxRadius;this.scale=(1.5-depth)*1.5;this.opacity=Math.max(0,this.scale/2.25);this.angle+=this.angularVelocity;this.radius-=this.baseRadiusVelocity*this.scale;this.x=this.centerX+Math.cos(this.angle)*this.radius;this.y=this.centerY+Math.sin(this.angle)*this.radius;this.rotation+=this.rotationSpeed;if(this.radius<1){this.reset()}}
-        draw(){ctx.save();ctx.translate(this.x,this.y);ctx.rotate(this.rotation);ctx.scale(this.scale,this.scale);ctx.fillStyle=`rgba(${this.rgbColor[0]}, ${this.rgbColor[1]}, ${this.rgbColor[2]}, ${this.opacity})`;ctx.beginPath();ctx.moveTo(this.shape[0].x,this.shape[0].y);for(let i=1;i<this.shape.length;i++){ctx.lineTo(this.shape[i].x,this.shape[i].y)}
-        ctx.closePath();ctx.fill();ctx.restore()}}
-        function initParticles(){
-            particles.length = 0; 
-            for(let i=0;i<particleCount;i++){particles.push(new Particle())}
-        }
-        function animateParticles(){ctx.fillStyle='#000000';ctx.fillRect(0,0,width,height);particles.forEach(p=>{p.update();p.draw()});requestAnimationFrame(animateParticles)}
-        const resizeObserver = new ResizeObserver(() => {
+        window.addEventListener('DOMContentLoaded', () => {
+        
+            // --- Particle Animation Script ---
+            const heroSection = document.getElementById('hero');
+            const canvas = document.getElementById('particleCanvas');
+            const ctx = canvas.getContext('2d');
             canvas.width = heroSection.clientWidth;
             canvas.height = heroSection.clientHeight;
-            width = canvas.width;
-            height = canvas.height;
-            centralRadius = Math.min(width, height) * 0.4;
+            let width = canvas.width;
+            let height = canvas.height;
+            const particleCount = 400;
+            const particles = [];
+            const colors = ['#FFFFFF', '#F5F5F5', '#E8E8E8', '#DCDCDC', '#F0F0F0'];
+            let centralRadius = Math.min(width, height) * 0.4;
+            class Particle{constructor(){this.centerX=width/2;this.centerY=height/2;this.reset()}
+            createShape(){const sides=Math.floor(Math.random()*3+3);const shape=[];for(let i=0;i<sides;i++){const angle=(i/sides)*Math.PI*2;const radius=this.baseSize*(0.6+Math.random()*0.4);shape.push({x:Math.cos(angle)*radius,y:Math.sin(angle)*radius})}
+            return shape}
+            reset(){this.baseSize=Math.random()*3+1.5;this.maxRadius=centralRadius*(1.2+Math.random()*0.5);this.radius=this.maxRadius;this.angle=Math.random()*Math.PI*2;this.angularVelocity=(Math.random()-0.5)*0.005+0.0025;this.baseRadiusVelocity=Math.random()*0.025+0.025;const fullColor=colors[Math.floor(Math.random()*colors.length)];this.rgbColor=fullColor.match(/\w\w/g).map(x=>parseInt(x,16));this.rotation=Math.random()*Math.PI*2;this.rotationSpeed=(Math.random()-0.5)*0.005;this.shape=this.createShape()}
+            update(){const depth=this.radius/this.maxRadius;this.scale=(1.5-depth)*1.5;this.opacity=Math.max(0,this.scale/2.25);this.angle+=this.angularVelocity;this.radius-=this.baseRadiusVelocity*this.scale;this.x=this.centerX+Math.cos(this.angle)*this.radius;this.y=this.centerY+Math.sin(this.angle)*this.radius;this.rotation+=this.rotationSpeed;if(this.radius<1){this.reset()}}
+            draw(){ctx.save();ctx.translate(this.x,this.y);ctx.rotate(this.rotation);ctx.scale(this.scale,this.scale);ctx.fillStyle=`rgba(${this.rgbColor[0]}, ${this.rgbColor[1]}, ${this.rgbColor[2]}, ${this.opacity})`;ctx.beginPath();ctx.moveTo(this.shape[0].x,this.shape[0].y);for(let i=1;i<this.shape.length;i++){ctx.lineTo(this.shape[i].x,this.shape[i].y)}
+            ctx.closePath();ctx.fill();ctx.restore()}}
+            function initParticles(){
+                particles.length = 0; 
+                for(let i=0;i<particleCount;i++){particles.push(new Particle())}
+            }
+            function animateParticles(){ctx.fillStyle='#000000';ctx.fillRect(0,0,width,height);particles.forEach(p=>{p.update();p.draw()});requestAnimationFrame(animateParticles)}
+            const resizeObserver = new ResizeObserver(() => {
+                canvas.width = heroSection.clientWidth;
+                canvas.height = heroSection.clientHeight;
+                width = canvas.width;
+                height = canvas.height;
+                centralRadius = Math.min(width, height) * 0.4;
+                initParticles();
+            });
+            resizeObserver.observe(heroSection);
             initParticles();
-        });
-        resizeObserver.observe(heroSection);
-        initParticles();
-        animateParticles();
+            animateParticles();
 
-        const projectLinks = document.querySelectorAll('.project-link');
-        const projectViewers = document.querySelectorAll('.project-viewer');
-        projectLinks.forEach(link => {
-            link.addEventListener('click', (e) => {
-                e.preventDefault();
-                const targetId = link.getAttribute('data-target');
-                projectLinks.forEach(projLink => {
-                    projLink.classList.remove('font-bold', 'text-white', 'border-white');
-                    projLink.classList.add('text-gray-400', 'border-transparent');
-                });
-                link.classList.add('font-bold', 'text-white', 'border-white');
-                link.classList.remove('text-gray-400', 'border-transparent');
-                projectViewers.forEach(viewer => {
-                    viewer.id === targetId ? viewer.classList.remove('hidden') : viewer.classList.add('hidden');
+            // --- Project Tabs & Nav Scroll Logic ---
+            const projectLinks = document.querySelectorAll('.project-link');
+            const projectViewers = document.querySelectorAll('.project-viewer');
+            projectLinks.forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const targetId = link.getAttribute('data-target');
+                    projectLinks.forEach(projLink => {
+                        projLink.classList.remove('font-bold', 'text-white', 'border-white');
+                        projLink.classList.add('text-gray-400', 'border-transparent');
+                    });
+                    link.classList.add('font-bold', 'text-white', 'border-white');
+                    link.classList.remove('text-gray-400', 'border-transparent');
+                    projectViewers.forEach(viewer => {
+                        viewer.id === targetId ? viewer.classList.remove('hidden') : viewer.classList.add('hidden');
+                    });
                 });
             });
-        });
-        const sections = document.querySelectorAll('main section');
-        const navLi = document.querySelectorAll('header nav ul li a');
-        window.addEventListener('scroll', ()=> {
-            let current = 'hero';
-            sections.forEach( section => {
-                const sectionTop = section.offsetTop;
-                if (pageYOffset >= sectionTop - 70) {
-                    current = section.getAttribute('id');
-                }
-            })
-            navLi.forEach( a => {
-                a.classList.remove('active');
-                if (a.getAttribute('href') == `#${current}`) {
-                    a.classList.add('active');
-                }
-            })
-        });
-    </script>
+            const sections = document.querySelectorAll('main section');
+            const navLi = document.querySelectorAll('header nav ul li a');
+            window.addEventListener('scroll', ()=> {
+                let current = 'hero';
+                sections.forEach( section => {
+                    const sectionTop = section.offsetTop;
+                    if (pageYOffset >= sectionTop - 70) {
+                        current = section.getAttribute('id');
+                    }
+                })
+                navLi.forEach( a => {
+                    a.classList.remove('active');
+                    if (a.getAttribute('href') == `#${current}`) {
+                        a.classList.add('active');
+                    }
+                })
+            });
 
-    <script type="text/babel">
-        const { useState, useEffect, useRef, useMemo } = React;
-        const generateForceGraphData=()=>{const e=25,t=Array.from({length:e},(_,t)=>({id:t}));return{nodes:t,links:Array.from({length:e-1},(_,i)=>({source:Math.floor(Math.random()*e),target:Math.floor(Math.random()*e)})).filter(e=>e.source!==e.target)}};const generateBarChartData=()=>[{label:"A",value:Math.floor(100*Math.random())+10},{label:"B",value:Math.floor(100*Math.random())+10},{label:"C",value:Math.floor(100*Math.random())+10},{label:"D",value:Math.floor(100*Math.random())+10},{label:"E",value:Math.floor(100*Math.random())+10},{label:"F",value:Math.floor(100*Math.random())+10}];const useChartDimensions=e=>{const t=useRef(),i=useMemo(()=>({...{top:10,right:10,bottom:10,left:10},...e}),[e]),[r,n]=useState(0),[o,a]=useState(0);return useEffect(()=>{const e=t.current;if(!e)return;const i=new ResizeObserver((e=>{if(!Array.isArray(e)||!e.length)return;const t=e[0];r!==t.contentRect.width&&n(t.contentRect.width),o!==t.contentRect.height&&a(t.contentRect.height)}));return i.observe(e),()=>i.disconnect()}),[r,o]),[t,{...i,width:r,height:o,boundedWidth:Math.max(0,r-i.left-i.right),boundedHeight:Math.max(0,o-i.top-i.bottom)}]};const ForceGraph=({data:e})=>{const[t,i]=useChartDimensions({}),r=useRef(),n=useRef();return useEffect(()=>{if(!i.width||!e)return;const o=d3.select(r.current),a=e.nodes.map(e=>({...e})),l=e.links.map(e=>({...e}));if(!n.current){const e=o.append("g").attr("class","links"),t=o.append("g").attr("class","nodes"),s=d3.forceSimulation().force("link",d3.forceLink().id(e=>e.id).distance(50)).force("charge",d3.forceManyBody().strength(-150)).force("center",d3.forceCenter());s.on("tick",()=>{e.selectAll("line").attr("x1",e=>e.source.x).attr("y1",e=>e.source.y).attr("x2",e=>e.target.x).attr("y2",e=>e.target.y),t.selectAll("circle").attr("cx",e=>e.x).attr("cy",e=>e.y)}),n.current=s}const s=n.current;s.force("center").x(i.width/2).y(i.height/2);const c=d3.select(o.select("g.nodes").node()).selectAll("circle").data(a,e=>e.id);c.exit().remove();const d=c.enter().append("circle").attr("r",5).attr("fill","#cbd5e1").attr("stroke","#fff").attr("stroke-width",1.5);d.append("title").text(e=>e.id);const h=d3.select(o.select("g.links").node()).selectAll("line").data(l,e=>`${e.source.id||e.source}-${e.target.id||e.target}`);h.exit().remove(),h.enter().append("line").attr("stroke","#64748b").attr("stroke-opacity",.6).attr("stroke-width",1.5),s.nodes(a),s.force("link").links(l),s.alpha(1).restart()},[e,i]),<div ref={t} style={{width:"100%",height:"100%"}}><svg ref={r} width={i.width} height={i.height}></svg></div>};const BarChart=({data:e})=>{const[t,i]=useChartDimensions({top:20,right:20,bottom:20,left:20}),r=useRef();return useEffect(()=>{if(!i.width||!e.length)return;const n=d3.select(r.current);let o=n.select("g");o.empty()&&(o=n.append("g")),o.attr("transform",`translate(${i.left}, ${i.top})`);const a=d3.scaleBand().domain(e.map(e=>e.label)).range([0,i.boundedWidth]).padding(.2),l=d3.scaleLinear().domain([0,d3.max(e,e=>e.value)]).range([i.boundedHeight,0]),s=o.selectAll(".bar").data(e,e=>e.label);s.enter().append("rect").attr("class","bar").attr("fill","white").attr("x",e=>a(e.label)).attr("width",a.bandwidth()).attr("y",i.boundedHeight).attr("height",0).merge(s).transition().duration(800).attr("x",e=>a(e.label)).attr("width",a.bandwidth()).attr("y",e=>l(e.value)).attr("height",e=>i.boundedHeight-l(e.value)),s.exit().transition().duration(400).attr("y",i.boundedHeight).attr("height",0).remove()},[e,i]),<div ref={t} style={{width:"100%",height:"100%"}}><svg ref={r} width={i.width} height={i.height}></svg></div>};const ClickableForceGraph=()=>{const[e,t]=useState(generateForceGraphData),i=()=>t(generateForceGraphData());return<div onClick={i} style={{cursor:"pointer",width:"100%",height:"100%"}} title="Click to restart animation"><ForceGraph data={e}/></div>};const ClickableBarChart=()=>{const[e,t]=useState(generateBarChartData),i=()=>t(generateBarChartData());return<div onClick={i} style={{cursor:"pointer",width:"100%",height:"100%"}} title="Click to restart animation"><BarChart data={e}/></div>};
-        
-        const forceGraphContainer = document.getElementById('force-graph-container');
-        const forceGraphRoot = ReactDOM.createRoot(forceGraphContainer);
-        forceGraphRoot.render(<ClickableForceGraph />);
-        
-        const barChartContainer = document.getElementById('bar-chart-container');
-        const barChartRoot = ReactDOM.createRoot(barChartContainer);
-        barChartRoot.render(<ClickableBarChart />);
+            // --- D3.js Chart Logic ---
+            function renderForceGraph(containerId) {
+                const container = d3.select(`#${containerId}`);
+                if (container.empty()) return;
+                const width = container.node().clientWidth;
+                const height = container.node().clientHeight;
+
+                const svg = container.append("svg").attr("width", width).attr("height", height);
+                const linkGroup = svg.append("g").attr("stroke", "#64748b").attr("stroke-opacity", 0.6);
+                const nodeGroup = svg.append("g").attr("stroke", "#fff").attr("stroke-width", 1.5);
+
+                const simulation = d3.forceSimulation()
+                    .force("link", d3.forceLink().id(d => d.id).distance(50))
+                    .force("charge", d3.forceManyBody().strength(-150))
+                    .force("center", d3.forceCenter(width / 2, height / 2));
+
+                function update(data) {
+                    const nodes = data.nodes;
+                    const links = data.links;
+
+                    const nodeSelection = nodeGroup.selectAll("circle").data(nodes, d => d.id);
+                    nodeSelection.exit().remove();
+                    nodeSelection.enter().append("circle").attr("r", 5).attr("fill", "#cbd5e1").append("title").text(d => d.id);
+
+                    const linkSelection = linkGroup.selectAll("line").data(links, d => `${d.source.id}-${d.target.id}`);
+                    linkSelection.exit().remove();
+                    linkSelection.enter().append("line").attr("stroke-width", 1.5);
+                    
+                    simulation.nodes(nodes);
+                    simulation.force("link").links(links);
+                    simulation.alpha(1).restart();
+                }
+
+                simulation.on("tick", () => {
+                    linkGroup.selectAll("line").attr("x1", d => d.source.x).attr("y1", d => d.source.y).attr("x2", d => d.target.x).attr("y2", d => d.target.y);
+                    nodeGroup.selectAll("circle").attr("cx", d => d.x).attr("cy", d => d.y);
+                });
+                
+                const generateData = () => {
+                    const numNodes = 25;
+                    const nodes = Array.from({ length: numNodes }, (_, i) => ({ id: i }));
+                    const links = Array.from({ length: numNodes - 1 }, () => ({
+                        source: Math.floor(Math.random() * numNodes),
+                        target: Math.floor(Math.random() * numNodes),
+                    })).filter(d => d.source !== d.target);
+                    return { nodes, links };
+                };
+
+                update(generateData());
+                container.on("click", () => update(generateData()));
+            }
+
+            function renderBarChart(containerId) {
+                const container = d3.select(`#${containerId}`);
+                if (container.empty()) return;
+                const width = container.node().clientWidth;
+                const height = container.node().clientHeight;
+                const margin = { top: 20, right: 20, bottom: 20, left: 20 };
+                const boundedWidth = width - margin.left - margin.right;
+                const boundedHeight = height - margin.top - margin.bottom;
+
+                const svg = container.append("svg").attr("width", width).attr("height", height);
+                const g = svg.append("g").attr("transform", `translate(${margin.left}, ${margin.top})`);
+                
+                function update(data) {
+                    const xScale = d3.scaleBand().domain(data.map(d => d.label)).range([0, boundedWidth]).padding(0.2);
+                    const yScale = d3.scaleLinear().domain([0, 110]).range([boundedHeight, 0]);
+
+                    const bars = g.selectAll(".bar").data(data, d => d.label);
+                    
+                    bars.enter().append("rect").attr("class", "bar").attr("fill", "white")
+                        .attr("x", d => xScale(d.label)).attr("width", xScale.bandwidth())
+                        .attr("y", boundedHeight).attr("height", 0)
+                        .merge(bars)
+                        .transition().duration(800)
+                        .attr("x", d => xScale(d.label)).attr("width", xScale.bandwidth())
+                        .attr("y", d => yScale(d.value)).attr("height", d => boundedHeight - yScale(d.value));
+                }
+
+                const generateData = () => [
+                    { label: 'A', value: Math.floor(Math.random() * 100) + 10 }, { label: 'B', value: Math.floor(Math.random() * 100) + 10 },
+                    { label: 'C', value: Math.floor(Math.random() * 100) + 10 }, { label: 'D', value: Math.floor(Math.random() * 100) + 10 },
+                    { label: 'E', value: Math.floor(Math.random() * 100) + 10 }, { label: 'F', value: Math.floor(Math.random() * 100) + 10 },
+                ];
+
+                update(generateData());
+                container.on("click", () => update(generateData()));
+            }
+
+            // --- Initialize Charts ---
+            renderForceGraph('force-graph-container');
+            renderBarChart('bar-chart-container');
+        });
     </script>
 
 </body>
