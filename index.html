@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>JOE MURGUIA</title>
+    <title>Jose Murguia | Data Analytics & Visualization</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700&display=swap" rel="stylesheet">
 
@@ -12,440 +12,231 @@
     <script src="https://d3js.org/d3.v7.min.js"></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
 
-
-
     <style>
-        /* Basic CSS reset and styling for the body */
         body {
-            margin: 0;
-            overflow: hidden;
             background-color: #000000;
             font-family: 'Inter', sans-serif;
             color: #fff;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            text-align: center;
         }
-
-        /* Styling for the canvas to make it a fullscreen background */
-        canvas {
-            display: block;
+        header {
+            background-color: rgba(10, 10, 15, 0.7);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        canvas#particleCanvas {
             position: absolute;
             top: 0;
             left: 0;
-            z-index: -1; /* Place canvas behind other content */
+            z-index: 0; 
+            width: 100%;
+            height: 100%;
         }
-
-        /* Styling for the content box */
-        .content {
-            background-color: rgba(20, 20, 25, 0.7);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            /* REMOVED padding from here; moved to Tailwind classes for responsiveness */
-            border-radius: 1.5rem;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            width: 90%;
-            max-width: 900px;
-            max-height: 85vh;
-            overflow-y: auto;
-            transition: max-height 0.5s ease-in-out;
+        .nav-link.active {
+            color: #ffffff;
+            font-weight: 700;
         }
-
-        /* Custom scrollbar for a cleaner look */
-        .content::-webkit-scrollbar {
-            width: 8px;
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {
+                transform: translateY(0);
+            }
+            40% {
+                transform: translateY(-10px);
+            }
+            60% {
+                transform: translateY(-5px);
+            }
         }
-        .content::-webkit-scrollbar-track {
-            background: rgba(255,255,255,0.05);
-            border-radius: 10px;
+        .animate-bounce-slow {
+            animation: bounce 2s infinite;
         }
-        .content::-webkit-scrollbar-thumb {
-            background: rgba(255,255,255,0.2);
-            border-radius: 10px;
-        }
-        .content::-webkit-scrollbar-thumb:hover {
-            background: rgba(255,255,255,0.3);
-        }
-
-        /* REMOVED: Redundant media query. Padding is now handled by Tailwind utilities. */
-
     </style>
-
 </head>
-<body>
-    <canvas id="particleCanvas"></canvas>
+<body class="bg-black">
 
-    <div class="content p-4 sm:p-6 md:p-8">
-        <h1 class="text-xl sm:text-2xl font-bold mb-6 tracking-tight text-white">JOSE MURGUIA</h1>
-
-        <nav>
-            <ul class="flex flex-col sm:flex-row justify-center gap-y-4 sm:gap-x-10 md:gap-x-16">
-                <li><a href="#" class="nav-link text-base sm:text-lg text-gray-300 hover:text-white transition-colors duration-300" data-target="home-content">ABOUT</a></li>
-                <li><a href="#" class="nav-link text-base sm:text-lg text-gray-300 hover:text-white transition-colors duration-300" data-target="projects-content">PROJECTS</a></li>
-                <li><a href="#" class="nav-link text-base sm:text-lg text-gray-300 hover:text-white transition-colors duration-300" data-target="contact-content">CONTACT</a></li>
-            </ul>
+    <header class="sticky top-0 z-50 w-full">
+        <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-end h-16">
+                <ul class="flex items-center space-x-6 sm:space-x-10">
+                    <li><a href="#about" class="nav-link text-base text-gray-300 hover:text-white transition-colors duration-300">ABOUT</a></li>
+                    <li><a href="#projects" class="nav-link text-base text-gray-300 hover:text-white transition-colors duration-300">PROJECTS</a></li>
+                    <li><a href="#contact" class="nav-link text-base text-gray-300 hover:text-white transition-colors duration-300">CONTACT</a></li>
+                </ul>
+            </div>
         </nav>
-        <div id="page-content-container" class="mt-6">
-            <div id="home-content" class="page-content hidden p-4 text-center">
-                <h2 class="text-xl font-bold"></h2>
-                <p class="mt-2 text-sm text-gray-200">Web Development - Data Analytics - Data Visualization </p>
+    </header>
 
-                <div id="force-graph-container" class="w-full h-[250px] sm:h-[300px]"></div>
-                <div id="bar-chart-container" class="w-full h-[250px] sm:h-[300px]"></div>
+    <main>
 
+        <section id="hero" class="relative h-[85vh] flex flex-col items-center justify-center text-center overflow-hidden">
+            <canvas id="particleCanvas"></canvas>
+            <div class="relative z-10">
+                <h1 class="text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight text-white">JOSE MURGUIA</h1>
+                <p class="mt-4 text-lg text-gray-300">Web Development - Data Analytics - Data Visualization</p>
             </div>
-            <div id="projects-content" class="page-content hidden p-4 text-left">
-                <h2 class="text-xl font-bold text-center">[]</h2>
-                <p class="mt-2 text-center text-sm text-gray-300">Click a project below to view it.</p>
-                <div class="flex flex-col sm:flex-row justify-center items-center gap-y-3 sm:gap-x-6 my-4">
-                    <a href="#" class="project-link font-bold text-white" data-target="power-bi-viewer">Power BI Report</a>
-                    <a href="#" class="project-link text-gray-300 hover:text-white" data-target="joemur-viewer">Python: Data Exploration Part I</a>
-                    <a href="#" class="project-link text-gray-300 hover:text-white" data-target="slides-viewer">Data Exploration Part II</a>
-                </div>
+            <div class="absolute bottom-10 z-10">
+                <a href="#about" class="animate-bounce-slow inline-block p-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                    </svg>
+                </a>
+            </div>
+        </section>
 
-                <div id="project-viewer-container">
-                    <div id="power-bi-viewer" class="project-viewer">
-                        <iframe
-                            title="Power BI Report"
-                            src="https://app.powerbi.com/view?r=eyJrIjoiNTZhMDRmM2ItOTg0MC00YTFmLWJjYjUtNmEwYzRiNjEzZDAwIiwidCI6IjAxOGU1Y2Y3LTMxZTUtNDYwYS05ODlmLTcyMDRmZDUyOGI1YSJ9"
-                            frameborder="0"
-                            allowFullScreen="true"
-                            class="w-full rounded-lg border border-gray-700 h-[350px] sm:h-[450px] md:h-[550px]">
-                        </iframe>
-                    </div>
-                     <div id="joemur-viewer" class="project-viewer hidden">
-                        <iframe
-                            title="JoeMur Exploration"
-                            src="https://joemur.com/Part_I_exploration.html"
-                            frameborder="0"
-                            allowFullScreen="true"
-                            class="w-full rounded-lg border border-gray-700 h-[350px] sm:h-[450px] md:h-[650px]">
-                        </iframe>
-                    </div>
-                    <div id="slides-viewer" class="project-viewer hidden">
-                         <iframe
-                            title="Slide Deck"
-                            src="https://joemur.com/Part_II_slide_deck.slides.html#"
-                            frameborder="0"
-                            allowFullScreen="true"
-                            class="w-full rounded-lg border border-gray-700 h-[350px] sm:h-[450px] md:h-[600px]">
-                        </iframe>
-                    </div>
+        <section id="about" class="py-20 sm:py-24 bg-black">
+            <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+                <div class="max-w-3xl mx-auto text-center text-gray-300 text-base">
+                    <p class="text-xl text-white mb-4 font-medium">
+                        I translate raw data into strategic advantage.
+                    </p>
+                    <p class="mb-4 leading-relaxed">
+                        My expertise lies at the intersection of data analytics and interactive web development. I don't just create reports; I build intuitive, data-driven experiences. Using Python for rigorous analysis and powerful visualization tools like Power BI and D3.js—as demonstrated by the charts below—I uncover the critical insights hidden within your information.
+                    </p>
+                    <p class="leading-relaxed">
+                        The result is clarity. You get a clear, compelling story that empowers your team to make confident, data-backed decisions.
+                    </p>
+                </div>
+                <div class="mt-12 grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div id="force-graph-container" class="w-full h-[300px] sm:h-[350px]"></div>
+                    <div id="bar-chart-container" class="w-full h-[300px] sm:h-[350px]"></div>
                 </div>
             </div>
-            <div id="contact-content" class="page-content hidden p-4 text-center">
-                <h2 class="text-xl font-bold">GET IN TOUCH</h2>
-                <div class="mt-4 space-y-2 text-sm text-gray-200">
+        </section>
+
+        <section id="projects" class="py-20 sm:py-24 bg-gray-900/50">
+             <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+                <h2 class="text-3xl font-bold tracking-tight">Showcasing a Versatile Skill Set</h2>
+                <div class="max-w-3xl mx-auto mt-4 text-center text-gray-300">
+                    <p class="mb-4 leading-relaxed">
+                        These projects highlight my capabilities across the full spectrum of data analysis—from in-depth, code-based exploration to polished, interactive business intelligence dashboards.
+                    </p>
+                    <p class="mb-4 leading-relaxed">
+                        The two-part <strong>Python Data Exploration</strong> project demonstrates the complete analytical lifecycle: it begins with a detailed, technical notebook (Part I) and concludes with a clear, stakeholder-ready presentation of the findings (Part II).
+                    </p>
+                     <p class="mb-4 leading-relaxed">
+                        Separately, the <strong>Power BI Report</strong> showcases my ability to develop user-friendly, interactive dashboards that allow for dynamic filtering and data discovery, providing at-a-glance insights for business users.
+                    </p>
+                </div>
+
+                <div class="mt-10">
+                    <div class="flex justify-center items-center gap-x-6 sm:gap-x-10 border-b border-gray-700">
+                        <a href="#" class="project-link font-bold text-white py-3 border-b-2 border-white" data-target="power-bi-viewer">Power BI Report</a>
+                        <a href="#" class="project-link text-gray-400 hover:text-white py-3 border-b-2 border-transparent" data-target="joemur-viewer">Python Part I</a>
+                        <a href="#" class="project-link text-gray-400 hover:text-white py-3 border-b-2 border-transparent" data-target="slides-viewer">Python Part II</a>
+                    </div>
+                    <div id="project-viewer-container" class="mt-8">
+                        <div id="power-bi-viewer" class="project-viewer">
+                            <iframe title="Power BI Report" src="https://app.powerbi.com/view?r=eyJrIjoiNTZhMDRmM2ItOTg0MC00YTFmLWJjYjUtNmEwYzRiNjEzZDAwIiwidCI6IjAxOGU1Y2Y3LTMxZTUtNDYwYS05ODlmLTcyMDRmZDUyOGI1YSJ9" frameborder="0" allowFullScreen="true" class="w-full rounded-lg border border-gray-700 h-[60vh]"></iframe>
+                        </div>
+                        <div id="joemur-viewer" class="project-viewer hidden">
+                            <iframe title="JoeMur Exploration" src="http://www.joemur.com/Part_I_exploration.html" frameborder="0" allowFullScreen="true" class="w-full rounded-lg border border-gray-700 h-[60vh]"></iframe>
+                        </div>
+                        <div id="slides-viewer" class="project-viewer hidden">
+                            <iframe title="Slide Deck" src="http://www.joemur.com/Part_II_slide_deck.slides.html#" frameborder="0" allowFullScreen="true" class="w-full rounded-lg border border-gray-700 h-[60vh]"></iframe>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="contact" class="py-20 sm:py-24 bg-black">
+            <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+                 <h2 class="text-3xl font-bold tracking-tight">Contact Me</h2>
+                 <p class="mt-4 text-lg text-gray-300">Let's connect and bring your data to life.</p>
+                <div class="mt-8 space-y-3 text-lg text-gray-200 inline-block text-left">
                     <p><strong>Location:</strong> Houston, Texas</p>
                     <p><strong>Phone:</strong> (281) 772-1495</p>
                     <p><strong>Email:</strong> murguia.joe@gmail.com</p>
                 </div>
             </div>
-        </div>
-    </div>
+        </section>
 
+    </main>
+    
     <script>
-        // --- PARTICLE ANIMATION SCRIPT (EXISTING) ---
+        const heroSection = document.getElementById('hero');
         const canvas = document.getElementById('particleCanvas');
         const ctx = canvas.getContext('2d');
-        let width = canvas.width = window.innerWidth;
-        let height = canvas.height = window.innerHeight;
+        canvas.width = heroSection.clientWidth;
+        canvas.height = heroSection.clientHeight;
+        let width = canvas.width;
+        let height = canvas.height;
         const particleCount = 400;
         const particles = [];
         const colors = ['#FFFFFF', '#F5F5F5', '#E8E8E8', '#DCDCDC', '#F0F0F0'];
         let centralRadius = Math.min(width, height) * 0.4;
-
-        class Particle {
-            constructor() {
-                this.centerX = width / 2;
-                this.centerY = height / 2;
-                this.reset();
-            }
-            createShape() {
-                const sides = Math.floor(Math.random() * 3 + 3);
-                const shape = [];
-                for (let i = 0; i < sides; i++) {
-                    const angle = (i / sides) * Math.PI * 2;
-                    const radius = this.baseSize * (0.6 + Math.random() * 0.4);
-                    shape.push({ x: Math.cos(angle) * radius, y: Math.sin(angle) * radius });
-                }
-                return shape;
-            }
-            reset() {
-                this.baseSize = Math.random() * 3 + 1.5;
-                this.maxRadius = centralRadius * (1.2 + Math.random() * 0.5);
-                this.radius = this.maxRadius;
-                this.angle = Math.random() * Math.PI * 2;
-                this.angularVelocity = (Math.random() - 0.5) * 0.005 + 0.0025;
-                this.baseRadiusVelocity = Math.random() * 0.025 + 0.025;
-                const fullColor = colors[Math.floor(Math.random() * colors.length)];
-                this.rgbColor = fullColor.match(/\w\w/g).map(x => parseInt(x, 16));
-                this.rotation = Math.random() * Math.PI * 2;
-                this.rotationSpeed = (Math.random() - 0.5) * 0.005;
-                this.shape = this.createShape();
-            }
-            update() {
-                const depth = this.radius / this.maxRadius;
-                this.scale = (1.5 - depth) * 1.5;
-                this.opacity = Math.max(0, this.scale / 2.25);
-                this.angle += this.angularVelocity;
-                this.radius -= this.baseRadiusVelocity * this.scale;
-                this.x = this.centerX + Math.cos(this.angle) * this.radius;
-                this.y = this.centerY + Math.sin(this.angle) * this.radius;
-                this.rotation += this.rotationSpeed;
-                if (this.radius < 1) {
-                    this.reset();
-                }
-            }
-            draw() {
-                ctx.save();
-                ctx.translate(this.x, this.y);
-                ctx.rotate(this.rotation);
-                ctx.scale(this.scale, this.scale);
-                ctx.fillStyle = `rgba(${this.rgbColor[0]}, ${this.rgbColor[1]}, ${this.rgbColor[2]}, ${this.opacity})`;
-                ctx.beginPath();
-                ctx.moveTo(this.shape[0].x, this.shape[0].y);
-                for (let i = 1; i < this.shape.length; i++) {
-                    ctx.lineTo(this.shape[i].x, this.shape[i].y);
-                }
-                ctx.closePath();
-                ctx.fill();
-                ctx.restore();
-            }
+        class Particle{constructor(){this.centerX=width/2;this.centerY=height/2;this.reset()}
+        createShape(){const sides=Math.floor(Math.random()*3+3);const shape=[];for(let i=0;i<sides;i++){const angle=(i/sides)*Math.PI*2;const radius=this.baseSize*(0.6+Math.random()*0.4);shape.push({x:Math.cos(angle)*radius,y:Math.sin(angle)*radius})}
+        return shape}
+        reset(){this.baseSize=Math.random()*3+1.5;this.maxRadius=centralRadius*(1.2+Math.random()*0.5);this.radius=this.maxRadius;this.angle=Math.random()*Math.PI*2;this.angularVelocity=(Math.random()-0.5)*0.005+0.0025;this.baseRadiusVelocity=Math.random()*0.025+0.025;const fullColor=colors[Math.floor(Math.random()*colors.length)];this.rgbColor=fullColor.match(/\w\w/g).map(x=>parseInt(x,16));this.rotation=Math.random()*Math.PI*2;this.rotationSpeed=(Math.random()-0.5)*0.005;this.shape=this.createShape()}
+        update(){const depth=this.radius/this.maxRadius;this.scale=(1.5-depth)*1.5;this.opacity=Math.max(0,this.scale/2.25);this.angle+=this.angularVelocity;this.radius-=this.baseRadiusVelocity*this.scale;this.x=this.centerX+Math.cos(this.angle)*this.radius;this.y=this.centerY+Math.sin(this.angle)*this.radius;this.rotation+=this.rotationSpeed;if(this.radius<1){this.reset()}}
+        draw(){ctx.save();ctx.translate(this.x,this.y);ctx.rotate(this.rotation);ctx.scale(this.scale,this.scale);ctx.fillStyle=`rgba(${this.rgbColor[0]}, ${this.rgbColor[1]}, ${this.rgbColor[2]}, ${this.opacity})`;ctx.beginPath();ctx.moveTo(this.shape[0].x,this.shape[0].y);for(let i=1;i<this.shape.length;i++){ctx.lineTo(this.shape[i].x,this.shape[i].y)}
+        ctx.closePath();ctx.fill();ctx.restore()}}
+        function initParticles(){
+            particles.length = 0; 
+            for(let i=0;i<particleCount;i++){particles.push(new Particle())}
         }
-        function initParticles() {
-            for (let i = 0; i < particleCount; i++) {
-                particles.push(new Particle());
-            }
-        }
-        function animateParticles() {
-            ctx.fillStyle = '#000000';
-            ctx.fillRect(0, 0, width, height);
-            particles.forEach(p => {
-                p.update();
-                p.draw();
-            });
-            requestAnimationFrame(animateParticles);
-        }
-
-        window.addEventListener('resize', () => {
-            width = canvas.width = window.innerWidth;
-            height = canvas.height = window.innerHeight;
+        function animateParticles(){ctx.fillStyle='#000000';ctx.fillRect(0,0,width,height);particles.forEach(p=>{p.update();p.draw()});requestAnimationFrame(animateParticles)}
+        const resizeObserver = new ResizeObserver(() => {
+            canvas.width = heroSection.clientWidth;
+            canvas.height = heroSection.clientHeight;
+            width = canvas.width;
+            height = canvas.height;
             centralRadius = Math.min(width, height) * 0.4;
-            particles.forEach(p => {
-                p.centerX = width / 2;
-                p.centerY = height / 2;
-            });
+            initParticles();
         });
+        resizeObserver.observe(heroSection);
+        initParticles();
+        animateParticles();
 
-        // --- UI NAVIGATION SCRIPT (NEW) ---
-        const contentContainer = document.querySelector('.content');
-        const navLinks = document.querySelectorAll('.nav-link');
-        const contentPanels = document.querySelectorAll('.page-content');
-        let isAnimating = false;
-
-        const baseHeight = contentContainer.scrollHeight + 1;
-        contentContainer.style.maxHeight = `${baseHeight}px`;
-
-        contentPanels.forEach(panel => panel.classList.add('hidden'));
-
-        navLinks.forEach(link => {
-            link.addEventListener('click', (e) => {
-                e.preventDefault();
-                if (isAnimating) return;
-
-                const targetId = link.getAttribute('data-target');
-                const targetPanel = document.getElementById(targetId);
-                const isAlreadyActive = link.classList.contains('font-bold');
-
-                navLinks.forEach(navLink => {
-                    navLink.classList.remove('font-bold', 'text-white');
-                    navLink.classList.add('text-gray-300');
-                });
-
-                if (isAlreadyActive) {
-                    isAnimating = true;
-                    contentContainer.style.maxHeight = `${baseHeight}px`;
-
-                    contentContainer.addEventListener('transitionend', function hidePanel() {
-                        targetPanel.classList.add('hidden');
-                        isAnimating = false;
-                        contentContainer.removeEventListener('transitionend', hidePanel);
-                    }, { once: true });
-                } else {
-                    isAnimating = true;
-                    contentPanels.forEach(panel => panel.classList.add('hidden'));
-                    targetPanel.classList.remove('hidden');
-                    link.classList.add('font-bold', 'text-white');
-                    link.classList.remove('text-gray-300');
-
-                    const newHeight = contentContainer.scrollHeight;
-                    contentContainer.style.maxHeight = `${newHeight}px`;
-
-                     contentContainer.addEventListener('transitionend', function onExpandEnd() {
-                        isAnimating = false;
-                        contentContainer.removeEventListener('transitionend', onExpandEnd);
-                    }, { once: true });
-                }
-            });
-        });
-
-        // Sub-Navigation for Projects
         const projectLinks = document.querySelectorAll('.project-link');
         const projectViewers = document.querySelectorAll('.project-viewer');
-
         projectLinks.forEach(link => {
             link.addEventListener('click', (e) => {
                 e.preventDefault();
                 const targetId = link.getAttribute('data-target');
-
                 projectLinks.forEach(projLink => {
-                    projLink.classList.remove('font-bold', 'text-white');
-                    projLink.classList.add('text-gray-300');
+                    projLink.classList.remove('font-bold', 'text-white', 'border-white');
+                    projLink.classList.add('text-gray-400', 'border-transparent');
                 });
-                link.classList.add('font-bold', 'text-white');
-                link.classList.remove('text-gray-300');
-
+                link.classList.add('font-bold', 'text-white', 'border-white');
+                link.classList.remove('text-gray-400', 'border-transparent');
                 projectViewers.forEach(viewer => {
-                    if (viewer.id === targetId) {
-                        viewer.classList.remove('hidden');
-                    } else {
-                        viewer.classList.add('hidden');
-                    }
+                    viewer.id === targetId ? viewer.classList.remove('hidden') : viewer.classList.add('hidden');
                 });
-
-                 const newHeight = contentContainer.scrollHeight;
-                 contentContainer.style.maxHeight = `${newHeight}px`;
             });
         });
-
-        // --- Start the animation ---
-        initParticles();
-        animateParticles();
-
+        const sections = document.querySelectorAll('main section');
+        const navLi = document.querySelectorAll('header nav ul li a');
+        window.addEventListener('scroll', ()=> {
+            let current = 'hero';
+            sections.forEach( section => {
+                const sectionTop = section.offsetTop;
+                if (pageYOffset >= sectionTop - 70) {
+                    current = section.getAttribute('id');
+                }
+            })
+            navLi.forEach( a => {
+                a.classList.remove('active');
+                if (a.getAttribute('href') == `#${current}`) {
+                    a.classList.add('active');
+                }
+            })
+        });
     </script>
 
-<script type="text/babel">
-    const { useState, useEffect, useRef, useMemo } = React;
-
-    // --- 1. DATA GENERATION ---
-    // Data for Force Graph
-    const generateForceGraphData = () => {
-      const numNodes = 25;
-      const nodes = Array.from({ length: numNodes }, (_, i) => ({ id: i }));
-      const links = Array.from({ length: numNodes - 1 }, (_, i) => ({
-        source: Math.floor(Math.random() * numNodes),
-        target: Math.floor(Math.random() * numNodes),
-      })).filter(d => d.source !== d.target);
-      return { nodes, links };
-    };
-
-    // Data for Bar Chart
-    const generateBarChartData = () => [
-      { label: 'A', value: Math.floor(Math.random() * 100) + 10 },
-      { label: 'B', value: Math.floor(Math.random() * 100) + 10 },
-      { label: 'C', value: Math.floor(Math.random() * 100) + 10 },
-      { label: 'D', value: Math.floor(Math.random() * 100) + 10 },
-      { label: 'E', value: Math.floor(Math.random() * 100) + 10 },
-      { label: 'F', value: Math.floor(Math.random() * 100) + 10 },
-    ];
-
-    // --- 2. CUSTOM HOOK (Used by both components) ---
-    const useChartDimensions = (passedSettings) => {
-      const ref = useRef();
-      const dimensions = useMemo(() => ({
-        ...{ top: 10, right: 10, bottom: 10, left: 10 },
-        ...passedSettings
-      }), [passedSettings]);
-      const [width, setWidth] = useState(0);
-      const [height, setHeight] = useState(0);
-      useEffect(() => {
-        const element = ref.current;
-        if (!element) return;
-        const resizeObserver = new ResizeObserver(entries => {
-          if (!Array.isArray(entries) || !entries.length) return;
-          const entry = entries[0];
-          if (width !== entry.contentRect.width) setWidth(entry.contentRect.width);
-          if (height !== entry.contentRect.height) setHeight(entry.contentRect.height);
-        });
-        resizeObserver.observe(element);
-        return () => resizeObserver.disconnect();
-      }, [width, height]);
-      return [ref, {
-        ...dimensions,
-        width: width,
-        height: height,
-        boundedWidth: Math.max(0, width - dimensions.left - dimensions.right),
-        boundedHeight: Math.max(0, height - dimensions.top - dimensions.bottom),
-      }];
-    };
-
-    // --- 3. REACT COMPONENTS ---
-
-    // ForceGraph Component (no changes)
-    const ForceGraph = ({ data }) => {
-      const [ref, dms] = useChartDimensions({});
-      const svgRef = useRef();
-      useEffect(() => {
-        if (!dms.width || !data.nodes) return;
-        const links = data.links.map(d => ({...d}));
-        const nodes = data.nodes.map(d => ({...d}));
-        const simulation = d3.forceSimulation(nodes)
-          .force("link", d3.forceLink(links).id(d => d.id).distance(50))
-          .force("charge", d3.forceManyBody().strength(-150))
-          .force("center", d3.forceCenter(dms.width / 2, dms.height / 2));
-        const svg = d3.select(svgRef.current);
-        svg.selectAll("*").remove();
-        const link = svg.append("g").attr("stroke", "#64748b").attr("stroke-opacity", 0.6).selectAll("line").data(links).join("line").attr("stroke-width", 1.5);
-        const node = svg.append("g").attr("stroke", "#fff").attr("stroke-width", 1.5).selectAll("circle").data(nodes).join("circle").attr("r", 5).attr("fill", "#cbd5e1");
-        node.append("title").text(d => d.id);
-        simulation.on("tick", () => {
-          link.attr("x1", d => d.source.x).attr("y1", d => d.source.y).attr("x2", d => d.target.x).attr("y2", d => d.target.y);
-          node.attr("cx", d => d.x).attr("cy", d => d.y);
-        });
-      }, [data, dms]);
-      return <div ref={ref} style={{ width: '100%', height: '100%' }}><svg ref={svgRef} width={dms.width} height={dms.height}></svg></div>;
-    };
-
-    // BarChart Component (newly added)
-    const BarChart = ({ data }) => {
-      const [ref, dms] = useChartDimensions({ top: 20, right: 20, bottom: 20, left: 20 });
-      const svgRef = useRef();
-      useEffect(() => {
-        if (!dms.width || !data.length) return;
-        const svg = d3.select(svgRef.current);
-        svg.selectAll("*").remove();
-        const xScale = d3.scaleBand().domain(data.map(d => d.label)).range([0, dms.boundedWidth]).padding(0.2);
-        const yScale = d3.scaleLinear().domain([0, d3.max(data, d => d.value)]).range([dms.boundedHeight, 0]);
-        const g = svg.append("g").attr("transform", `translate(${dms.left}, ${dms.top})`);
-        g.selectAll(".bar").data(data).enter().append("rect")
-          .attr("class", "bar")
-          .attr("x", d => xScale(d.label))
-          .attr("width", xScale.bandwidth())
-          .attr("y", dms.boundedHeight)
-          .attr("height", 0)
-          .attr("fill", "white")
-          .transition().duration(800).delay((d, i) => i * 50)
-          .attr("y", d => yScale(d.value))
-          .attr("height", d => dms.boundedHeight - yScale(d.value));
-      }, [data, dms]);
-      return <div ref={ref} style={{ width: '100%', height: '100%' }}><svg ref={svgRef} width={dms.width} height={dms.height}></svg></div>;
-    };
-
-    // --- 4. RENDER THE COMPONENTS ---
-    // Render the Force Graph into its container
-    const forceGraphContainer = document.getElementById('force-graph-container');
-    const forceGraphRoot = ReactDOM.createRoot(forceGraphContainer);
-    forceGraphRoot.render(<ForceGraph data={generateForceGraphData()} />);
-
-    // Render the Bar Chart into its container
-    const barChartContainer = document.getElementById('bar-chart-container');
-    const barChartRoot = ReactDOM.createRoot(barChartContainer);
-    barChartRoot.render(<BarChart data={generateBarChartData()} />);
-
-  </script>
+    <script type="text/babel">
+        const { useState, useEffect, useRef, useMemo } = React;
+        const generateForceGraphData=()=>{const e=25,t=Array.from({length:e},(_,t)=>({id:t}));return{nodes:t,links:Array.from({length:e-1},(_,i)=>({source:Math.floor(Math.random()*e),target:Math.floor(Math.random()*e)})).filter(e=>e.source!==e.target)}};const generateBarChartData=()=>[{label:"A",value:Math.floor(100*Math.random())+10},{label:"B",value:Math.floor(100*Math.random())+10},{label:"C",value:Math.floor(100*Math.random())+10},{label:"D",value:Math.floor(100*Math.random())+10},{label:"E",value:Math.floor(100*Math.random())+10},{label:"F",value:Math.floor(100*Math.random())+10}];const useChartDimensions=e=>{const t=useRef(),i=useMemo(()=>({...{top:10,right:10,bottom:10,left:10},...e}),[e]),[r,n]=useState(0),[o,a]=useState(0);return useEffect(()=>{const e=t.current;if(!e)return;const i=new ResizeObserver((e=>{if(!Array.isArray(e)||!e.length)return;const t=e[0];r!==t.contentRect.width&&n(t.contentRect.width),o!==t.contentRect.height&&a(t.contentRect.height)}));return i.observe(e),()=>i.disconnect()}),[r,o]),[t,{...i,width:r,height:o,boundedWidth:Math.max(0,r-i.left-i.right),boundedHeight:Math.max(0,o-i.top-i.bottom)}]};const ForceGraph=({data:e})=>{const[t,i]=useChartDimensions({}),r=useRef(),n=useRef();return useEffect(()=>{if(!i.width||!e)return;const o=d3.select(r.current),a=e.nodes.map(e=>({...e})),l=e.links.map(e=>({...e}));if(!n.current){const e=o.append("g").attr("class","links"),t=o.append("g").attr("class","nodes"),s=d3.forceSimulation().force("link",d3.forceLink().id(e=>e.id).distance(50)).force("charge",d3.forceManyBody().strength(-150)).force("center",d3.forceCenter());s.on("tick",()=>{e.selectAll("line").attr("x1",e=>e.source.x).attr("y1",e=>e.source.y).attr("x2",e=>e.target.x).attr("y2",e=>e.target.y),t.selectAll("circle").attr("cx",e=>e.x).attr("cy",e=>e.y)}),n.current=s}const s=n.current;s.force("center").x(i.width/2).y(i.height/2);const c=d3.select(o.select("g.nodes").node()).selectAll("circle").data(a,e=>e.id);c.exit().remove();const d=c.enter().append("circle").attr("r",5).attr("fill","#cbd5e1").attr("stroke","#fff").attr("stroke-width",1.5);d.append("title").text(e=>e.id);const h=d3.select(o.select("g.links").node()).selectAll("line").data(l,e=>`${e.source.id||e.source}-${e.target.id||e.target}`);h.exit().remove(),h.enter().append("line").attr("stroke","#64748b").attr("stroke-opacity",.6).attr("stroke-width",1.5),s.nodes(a),s.force("link").links(l),s.alpha(1).restart()},[e,i]),<div ref={t} style={{width:"100%",height:"100%"}}><svg ref={r} width={i.width} height={i.height}></svg></div>};const BarChart=({data:e})=>{const[t,i]=useChartDimensions({top:20,right:20,bottom:20,left:20}),r=useRef();return useEffect(()=>{if(!i.width||!e.length)return;const n=d3.select(r.current);let o=n.select("g");o.empty()&&(o=n.append("g")),o.attr("transform",`translate(${i.left}, ${i.top})`);const a=d3.scaleBand().domain(e.map(e=>e.label)).range([0,i.boundedWidth]).padding(.2),l=d3.scaleLinear().domain([0,d3.max(e,e=>e.value)]).range([i.boundedHeight,0]),s=o.selectAll(".bar").data(e,e=>e.label);s.enter().append("rect").attr("class","bar").attr("fill","white").attr("x",e=>a(e.label)).attr("width",a.bandwidth()).attr("y",i.boundedHeight).attr("height",0).merge(s).transition().duration(800).attr("x",e=>a(e.label)).attr("width",a.bandwidth()).attr("y",e=>l(e.value)).attr("height",e=>i.boundedHeight-l(e.value)),s.exit().transition().duration(400).attr("y",i.boundedHeight).attr("height",0).remove()},[e,i]),<div ref={t} style={{width:"100%",height:"100%"}}><svg ref={r} width={i.width} height={i.height}></svg></div>};const ClickableForceGraph=()=>{const[e,t]=useState(generateForceGraphData),i=()=>t(generateForceGraphData());return<div onClick={i} style={{cursor:"pointer",width:"100%",height:"100%"}} title="Click to restart animation"><ForceGraph data={e}/></div>};const ClickableBarChart=()=>{const[e,t]=useState(generateBarChartData),i=()=>t(generateBarChartData());return<div onClick={i} style={{cursor:"pointer",width:"100%",height:"100%"}} title="Click to restart animation"><BarChart data={e}/></div>};
+        
+        const forceGraphContainer = document.getElementById('force-graph-container');
+        const forceGraphRoot = ReactDOM.createRoot(forceGraphContainer);
+        forceGraphRoot.render(<ClickableForceGraph />);
+        
+        const barChartContainer = document.getElementById('bar-chart-container');
+        const barChartRoot = ReactDOM.createRoot(barChartContainer);
+        barChartRoot.render(<ClickableBarChart />);
+    </script>
 
 </body>
 </html>
