@@ -7,7 +7,7 @@
     <meta name="description" content="Portfolio of Jose Murguia, a data analytics and web development professional in Houston, TX. Specializing in Python, Power BI, and creating interactive data visualizations.">
     
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
     <script src="https://d3js.org/d3.v7.min.js"></script>
     <script src="https://www.google.com/recaptcha/api.js" async defer></script>
@@ -100,6 +100,36 @@
         .apple-slider .swiper-pagination-bullet-active {
             opacity: 1;
         }
+
+        /* Styles for the new AI Trends Chart */
+        #ai-trends-chart-container .bar-name-label {
+            font-size: 14px;
+            fill: #374151;
+            font-weight: 500;
+            text-anchor: end;
+        }
+        #ai-trends-chart-container .bar-value-label {
+            font-size: 14px;
+            fill: white;
+            font-weight: 600;
+            text-anchor: end;
+        }
+        #ai-trends-chart-container .year-label {
+            font-size: 6rem;
+            font-weight: 800;
+            opacity: 0.1;
+            fill: #111827;
+        }
+        #ai-trends-chart-container .domain {
+            stroke: none;
+        }
+        #ai-trends-chart-container .tick line {
+            stroke: #e5e7eb;
+        }
+        #ai-trends-chart-container .tick text {
+            font-size: 12px;
+            fill: #6b7280;
+        }
     </style>
 </head>
 <body class="bg-white">
@@ -187,6 +217,15 @@
                         <div id="slides-viewer" class="project-viewer hidden"><iframe title="Slide Deck" src="https://joemur.com/Part_II_slide_deck.slides.html" frameborder="0" allowFullScreen="true" class="w-full rounded-b-lg h-[70vh]"></iframe></div>
                     </div>
                 </div>
+                
+                <!-- RECOMMENDED SECTION WITH NEW CHART -->
+                <div class="mt-20 fade-in-element">
+                    <h3 class="text-2xl font-bold tracking-tight text-black">The Race of AI Trends</h3>
+                     <div class="max-w-5xl mx-auto mt-8 bg-white p-4 sm:p-6 rounded-lg shadow-lg border border-gray-200">
+                        <p class="text-base text-gray-500 mb-8 text-center">Projected Market Size (Billions USD), 2024-2032</p>
+                        <div id="ai-trends-chart-container" class="relative ai-trends-chart"></div>
+                    </div>
+                </div>
                  
                 <div class="mt-20 fade-in-element">
                     <h3 class="text-2xl font-bold tracking-tight text-black">Website Projects</h3>
@@ -269,6 +308,129 @@
             function renderForceGraph(e){const t=d3.select(`#${e}`);if(t.empty())return;const s=t.node().clientWidth,o=t.node().clientHeight,i=t.append("svg").attr("width",s).attr("height",o),n=i.append("g").attr("stroke","#9ca3af").attr("stroke-opacity",.6),a=i.append("g").attr("stroke","#e5e7eb").attr("stroke-width",1.5),r=d3.forceSimulation().force("link",d3.forceLink().id(e=>e.id).distance(50)).force("charge",d3.forceManyBody().strength(-150)).force("center",d3.forceCenter(s/2,o/2));function l(e){const t=e.nodes,s=e.links,o=a.selectAll("circle").data(t,e=>e.id);o.exit().remove(),o.enter().append("circle").attr("r",5).attr("fill","#374151").append("title").text(e=>e.id);const i=n.selectAll("line").data(s,e=>`${e.source.id}-${e.target.id}`);i.exit().remove(),i.enter().append("line").attr("stroke-width",1.5),r.nodes(t),r.force("link").links(s),r.alpha(1).restart()}r.on("tick",()=>{n.selectAll("line").attr("x1",e=>e.source.x).attr("y1",e=>e.source.y).attr("x2",e=>e.target.x).attr("y2",e=>e.target.y),a.selectAll("circle").attr("cx",e=>e.x).attr("cy",e=>e.y)});const c=()=>{const e=25,t=Array.from({length:e},(_,e)=>({id:e}));return{nodes:t,links:Array.from({length:e-1},()=>({source:Math.floor(Math.random()*e),target:Math.floor(Math.random()*e)})).filter(e=>e.source!==e.target)}};l(c()),t.on("click",()=>l(c()))}
             function renderBarChart(e){const t=d3.select(`#${e}`);if(t.empty())return;const s=t.node().clientWidth,o=t.node().clientHeight,i={top:20,right:20,bottom:20,left:20},n=s-i.left-i.right,a=o-i.top-i.bottom,r=t.append("svg").attr("width",s).attr("height",o),l=r.append("g").attr("transform",`translate(${i.left}, ${i.top})`);function c(e){const t=d3.scaleBand().domain(e.map(e=>e.label)).range([0,n]).padding(.2),s=d3.scaleLinear().domain([0,110]).range([a,0]),o=l.selectAll(".bar").data(e,e=>e.label);o.enter().append("rect").attr("class","bar").attr("fill","#111827").attr("x",e=>t(e.label)).attr("width",t.bandwidth()).attr("y",a).attr("height",0).merge(o).transition().duration(800).attr("x",e=>t(e.label)).attr("width",t.bandwidth()).attr("y",e=>s(e.value)).attr("height",e=>a-s(e.value))}const d=()=>[{label:"A",value:Math.floor(100*Math.random())+10},{label:"B",value:Math.floor(100*Math.random())+10},{label:"C",value:Math.floor(100*Math.random())+10},{label:"D",value:Math.floor(100*Math.random())+10},{label:"E",value:Math.floor(100*Math.random())+10},{label:"F",value:Math.floor(100*Math.random())+10}];c(d()),t.on("click",()=>c(d()))}
             renderForceGraph("force-graph-container"),renderBarChart("bar-chart-container");
+            
+            // AI TRENDS CHART SCRIPT
+            function renderAITrendsChart() {
+                const rawData = [
+                    {year: 2024, name: 'Generative AI', value: 65}, {year: 2024, name: 'AI in Healthcare', value: 28}, {year: 2024, name: 'AI in Cybersecurity', value: 27}, {year: 2024, name: 'AI in Finance', value: 33}, {year: 2024, name: 'AI Hardware (GPUs)', value: 125},
+                    {year: 2025, name: 'Generative AI', value: 98}, {year: 2025, name: 'AI in Healthcare', value: 37}, {year: 2025, name: 'AI in Cybersecurity', value: 34}, {year: 2025, name: 'AI in Finance', value: 42}, {year: 2025, name: 'AI Hardware (GPUs)', value: 160},
+                    {year: 2027, name: 'Generative AI', value: 200}, {year: 2027, name: 'AI in Healthcare', value: 61}, {year: 2027, name: 'AI in Cybersecurity', value: 52}, {year: 2027, name: 'AI in Finance', value: 68}, {year: 2027, name: 'AI Hardware (GPUs)', value: 240},
+                    {year: 2030, name: 'Generative AI', value: 668}, {year: 2030, name: 'AI in Healthcare', value: 158}, {year: 2030, name: 'AI in Cybersecurity', value: 88}, {year: 2030, name: 'AI in Finance', value: 130}, {year: 2030, name: 'AI Hardware (GPUs)', value: 350},
+                    {year: 2032, name: 'Generative AI', value: 1300}, {year: 2032, name: 'AI in Healthcare', value: 240}, {year: 2032, name: 'AI in Cybersecurity', value: 102}, {year: 2032, name: 'AI in Finance', value: 180}, {year: 2032, name: 'AI Hardware (GPUs)', value: 450}
+                ];
+                
+                const margin = {top: 40, right: 20, bottom: 20, left: 150};
+                const container = document.getElementById('ai-trends-chart-container');
+                if (!container) return; 
+                const width = container.clientWidth - margin.left - margin.right;
+                const height = 400 - margin.top - margin.bottom;
+                const barHeight = 45;
+                const n = 5;
+                const transitionDuration = 250;
+                const totalAnimationTime = 12000;
+                const pauseDuration = 3000;
+                
+                const svg = d3.select("#ai-trends-chart-container").append("svg")
+                    .attr("width", width + margin.left + margin.right)
+                    .attr("height", height + margin.top + margin.bottom)
+                    .append("g")
+                    .attr("transform", `translate(${margin.left},${margin.top})`);
+                    
+                const yearLabel = svg.append("text")
+                    .attr("class", "year-label")
+                    .attr("text-anchor", "end")
+                    .attr("y", height - 25)
+                    .attr("x", width - 25);
+                
+                const names = new Set(rawData.map(d => d.name));
+                const dataByGroup = d3.group(rawData, d => d.name);
+                const interpolators = new Map();
+                
+                for (const name of names) {
+                    const groupData = dataByGroup.get(name);
+                    const years = groupData.map(d => d.year);
+                    const values = groupData.map(d => d.value);
+                    interpolators.set(name, d3.scaleLinear(years, values));
+                }
+
+                let animationTimer;
+                const startYearValue = 2024;
+                const endYearValue = 2032;
+
+                const xAxis = svg.append("g").attr("class", "axis").style("opacity", 0.6);
+
+                function updateFrame(year) {
+                    const currentData = Array.from(names, name => ({
+                        name,
+                        value: interpolators.get(name)(year)
+                    })).sort((a,b) => b.value - a.value).slice(0, n);
+                    
+                    const x = d3.scaleLinear()
+                        .domain([0, d3.max(currentData, d => d.value)])
+                        .range([0, width]);
+
+                    xAxis.transition().duration(transitionDuration).call(d3.axisTop(x).ticks(5, "s").tickSize(-height));
+
+                    const y = d3.scaleBand()
+                        .domain(currentData.map(d => d.name))
+                        .range([0, (barHeight + 10) * n])
+                        .padding(0.1);
+
+                    svg.selectAll("rect.bar")
+                        .data(currentData, d => d.name)
+                        .join("rect")
+                        .attr("class", "bar")
+                        .style("fill", "#111827")
+                        .attr("rx", 6).attr("ry", 6)
+                        .transition().duration(transitionDuration).ease(d3.easeLinear)
+                        .attr("y", d => y(d.name))
+                        .attr("height", y.bandwidth())
+                        .attr("x", 0)
+                        .attr("width", d => x(d.value));
+
+                    svg.selectAll("text.bar-name-label")
+                        .data(currentData, d => d.name)
+                        .join("text")
+                        .attr("class", "bar-name-label")
+                        .attr("x", -10)
+                        .text(d => d.name)
+                        .transition().duration(transitionDuration).ease(d3.easeLinear)
+                        .attr("y", d => y(d.name) + y.bandwidth() / 2 + 5);
+                    
+                    svg.selectAll("text.bar-value-label")
+                        .data(currentData, d => d.name)
+                        .join("text")
+                        .attr("class", "bar-value-label")
+                        .html(d => `<strong>$${d.value.toFixed(0)}B</strong>`)
+                        .transition().duration(transitionDuration).ease(d3.easeLinear)
+                        .attr("x", d => x(d.value) - 10)
+                        .attr("y", d => y(d.name) + y.bandwidth() / 2 + 5);
+                    
+                    yearLabel.text(Math.floor(year));
+                }
+
+                function runAnimationCycle() {
+                    if (animationTimer) animationTimer.stop();
+
+                    animationTimer = d3.timer((elapsed) => {
+                        const t = elapsed / totalAnimationTime;
+                        const currentYear = d3.interpolate(startYearValue, endYearValue)(t);
+                        
+                        if (currentYear >= endYearValue) {
+                            updateFrame(endYearValue);
+                            animationTimer.stop();
+                            setTimeout(runAnimationCycle, pauseDuration);
+                        } else {
+                            updateFrame(currentYear);
+                        }
+                    });
+                }
+                
+                runAnimationCycle();
+            }
+            renderAITrendsChart();
+
+
             const contactForm=document.getElementById("contact-form"),successMessage=document.getElementById("success-message"),errorMessage=document.getElementById("error-message"),n8nWebhookUrl="https://n8n.joemur.com/webhook/52d3d76a-fc23-411e-8ca5-6670d5bd4dd2";contactForm.addEventListener("submit",async e=>{e.preventDefault();const t=contactForm.querySelector('button[type="submit"]'),s=t.innerHTML,o=grecaptcha.getResponse();if(0===o.length)return errorMessage.innerHTML="<p>Please complete the reCAPTCHA.</p>",void errorMessage.classList.remove("hidden");t.disabled=!0,t.innerHTML="Sending...";const i=new FormData(contactForm),n=Object.fromEntries(i.entries());try{const e=await fetch(n8nWebhookUrl,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(n)});if(!e.ok)throw new Error("Network response was not ok.")
             successMessage.classList.remove("hidden"),errorMessage.classList.add("hidden"),contactForm.reset(),grecaptcha.reset()}catch(e){console.error("There was a problem with the fetch operation:",e),errorMessage.innerHTML="<p>Something went wrong. Please try again later.</p>",errorMessage.classList.remove("hidden"),successMessage.classList.add("hidden")}finally{t.disabled=!1,t.innerHTML=s}});
             const swiper=new Swiper(".apple-slider",{effect:"slide",grabCursor:!0,centeredSlides:!0,slidesPerView:"auto",loop:!0,autoplay:{delay:4e3,disableOnInteraction:!1},pagination:{el:".swiper-pagination",clickable:!0},navigation:{nextEl:".swiper-button-next",prevEl:".swiper-button-prev"}});
