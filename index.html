@@ -61,26 +61,45 @@
             transform: translateY(0);
         }
         
-        /* SLIDER STYLES */
-        .swiper {
+        /* APPLE-STYLE SLIDER STYLES */
+        .apple-slider {
             width: 100%;
-            padding-top: 50px;
-            padding-bottom: 50px;
+            height: 70vh;
         }
-        .swiper-slide {
-            background-position: center;
-            background-size: cover;
-            width: 60%; /* Adjust width of the slides */
-            max-width: 500px;
+        .apple-slider .swiper-slide {
+            text-align: center;
+            font-size: 18px;
+            background: #000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            /* MODIFICATION: Reverted to cover and aligned to top */
+            background-position: top center;
+            background-size: cover; 
+            background-repeat: no-repeat;
+            color: #fff;
         }
-        .swiper-slide img {
-            display: block;
-            width: 100%;
-            border-radius: 0.5rem;
-            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+        .apple-slider .slide-content {
+            z-index: 10;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.5);
         }
-        .swiper-button-next, .swiper-button-prev { color: #000000; }
-        .swiper-pagination-bullet-active { background: #000000; }
+        .apple-slider .swiper-button-next,
+        .apple-slider .swiper-button-prev {
+            color: #fff;
+            opacity: 0.5;
+            transition: opacity 0.3s ease;
+        }
+        .apple-slider .swiper-button-next:hover,
+        .apple-slider .swiper-button-prev:hover {
+            opacity: 1;
+        }
+        .apple-slider .swiper-pagination-bullet {
+            background: #fff;
+            opacity: 0.6;
+        }
+        .apple-slider .swiper-pagination-bullet-active {
+            opacity: 1;
+        }
     </style>
 </head>
 <body class="bg-white">
@@ -170,20 +189,31 @@
                 </div>
                  
                 <div class="mt-20 fade-in-element">
-                    <h3 class="text-2xl font-bold tracking-tight text-black">Project Gallery</h3>
+                    <h3 class="text-2xl font-bold tracking-tight text-black">Website Projects</h3>
                     <div class="mt-8">
-                        <div class="swiper mySwiper">
+                        <div class="swiper apple-slider rounded-lg overflow-hidden">
                             <div class="swiper-wrapper">
-                                <div class="swiper-slide"><img src="https://joemur.com/images/slide1.jpg" alt="Project Screenshot 1"></div>
-                                <div class="swiper-slide"><img src="https://joemur.com/images/slide2.jpg" alt="Project Screenshot 2"></div>
-                                <div class="swiper-slide"><img src="https://joemur.com/images/slide3.jpg" alt="Project Screenshot 3"></div>
+                                <div class="swiper-slide" style="background-image:url(https://joemur.com/images/slide1.jpg)">
+                                    <div class="slide-content text-center">
+                                        <h2 class="text-4xl font-bold"></h2>
+                                        <p class="mt-2 text-xl"></p>
+                                    </div>
+                                </div>
+                                <div class="swiper-slide" style="background-image:url(https://joemur.com/images/slide2.jpg)">
+                                    <div class="slide-content text-center">
+                                        <h2 class="text-4xl font-bold"></h2>
+                                        <p class="mt-2 text-xl"></p>
+                                    </div>
+                                </div>
+                                <div class="swiper-slide" style="background-image:url(https://joemur.com/images/slide3.jpg)">
+                                    <div class="slide-content text-center">
+                                        <h2 class="text-4xl font-bold"></h2>
+                                        <p class="mt-2 text-xl"></p>
+                                    </div>
+                                </div>
                             </div>
-                              <!-- Add these for navigation -->
-                            <div class="swiper-button-next text-gray-400"></div>
-                            <div class="swiper-button-prev text-gray-400"></div>
-
-
-                            
+                            <div class="swiper-button-next"></div>
+                            <div class="swiper-button-prev"></div>
                             <div class="swiper-pagination"></div>
                         </div>
                     </div>
@@ -231,55 +261,18 @@
     <script>
         window.addEventListener('DOMContentLoaded', () => {
         
-            // --- Mobile Menu Logic ---
             const mobileMenuButton=document.getElementById("mobile-menu-button"),mobileMenu=document.getElementById("mobile-menu"),hamburgerIcon=document.getElementById("hamburger-icon"),closeIcon=document.getElementById("close-icon");mobileMenuButton.addEventListener("click",()=>{mobileMenu.classList.toggle("hidden"),hamburgerIcon.classList.toggle("hidden"),closeIcon.classList.toggle("hidden")}),document.querySelectorAll(".nav-link-mobile").forEach(e=>{e.addEventListener("click",()=>{mobileMenu.classList.add("hidden"),hamburgerIcon.classList.remove("hidden"),closeIcon.classList.add("hidden")})});
-
-            // --- Particle Animation Script ---
             const heroSection=document.getElementById("hero"),canvas=document.getElementById("particleCanvas"),ctx=canvas.getContext("2d");canvas.width=heroSection.clientWidth,canvas.height=heroSection.clientHeight;let width=canvas.width,height=canvas.height;const particleCount=200,particles=[],colors=["#FFFFFF","#F5F5F5","#E8E8E8","#DCDCDC","#F0F0F0"];let centralRadius=Math.min(width,height)*.4;class Particle{constructor(){this.centerX=width/2,this.centerY=height/2,this.reset()}createShape(){const e=Math.floor(3*Math.random()+3),t=[];for(let s=0;s<e;s++){const o=(s/e)*Math.PI*2,i=this.baseSize*(.6+.4*Math.random());t.push({x:Math.cos(o)*i,y:Math.sin(o)*i})}return t}reset(){this.baseSize=1.5*Math.random()+1.5,this.maxRadius=centralRadius*(1.2+.5*Math.random()),this.radius=this.maxRadius,this.angle=2*Math.random()*Math.PI,this.angularVelocity=.005*(Math.random()-.5)+.0025,this.baseRadiusVelocity=.025*Math.random()+.025;const e=colors[Math.floor(Math.random()*colors.length)];this.rgbColor=e.match(/\w\w/g).map(e=>parseInt(e,16)),this.rotation=2*Math.random()*Math.PI,this.rotationSpeed=.005*(Math.random()-.5),this.shape=this.createShape()}update(){const e=this.radius/this.maxRadius;this.scale=1.5*(1.5-e),this.opacity=Math.max(0,this.scale/2.25),this.angle+=this.angularVelocity,this.radius-=this.baseRadiusVelocity*this.scale,this.x=this.centerX+Math.cos(this.angle)*this.radius,this.y=this.centerY+Math.sin(this.angle)*this.radius,this.rotation+=this.rotationSpeed,this.radius<1&&this.reset()}draw(){ctx.save(),ctx.translate(this.x,this.y),ctx.rotate(this.rotation),ctx.scale(this.scale,this.scale),ctx.fillStyle=`rgba(${this.rgbColor[0]}, ${this.rgbColor[1]}, ${this.rgbColor[2]}, ${this.opacity})`,ctx.beginPath(),ctx.moveTo(this.shape[0].x,this.shape[0].y);for(let e=1;e<this.shape.length;e++)ctx.lineTo(this.shape[e].x,this.shape[e].y);ctx.closePath(),ctx.fill(),ctx.restore()}}
             function initParticles(){particles.length=0;for(let e=0;e<particleCount;e++)particles.push(new Particle)}function animateParticles(){ctx.fillStyle="#000000",ctx.fillRect(0,0,width,height),particles.forEach(e=>{e.update(),e.draw()}),requestAnimationFrame(animateParticles)}const resizeObserver=new ResizeObserver(()=>{canvas.width=heroSection.clientWidth,canvas.height=heroSection.clientHeight,width=canvas.width,height=canvas.height,centralRadius=Math.min(width,height)*.4,initParticles()});resizeObserver.observe(heroSection),initParticles(),animateParticles();
-            
-            // --- Project Tabs & Nav Scroll Logic ---
             const projectLinks=document.querySelectorAll(".project-link"),projectViewers=document.querySelectorAll(".project-viewer"),projectDescriptions=document.querySelectorAll(".project-description");projectLinks.forEach(e=>{e.addEventListener("click",t=>{t.preventDefault();const s=e.getAttribute("data-target");projectLinks.forEach(e=>{e.classList.remove("font-bold","text-black"),e.classList.add("text-gray-500")}),e.classList.add("font-bold","text-black"),e.classList.remove("text-gray-500"),projectViewers.forEach(e=>{e.id===s?e.classList.remove("hidden"):e.classList.add("hidden")}),projectDescriptions.forEach(e=>{e.getAttribute("data-project")===s?e.classList.remove("hidden"):e.classList.add("hidden")})})});const sections=document.querySelectorAll("main section"),navLi=document.querySelectorAll("header nav ul li a");window.addEventListener("scroll",()=>{let e="hero";sections.forEach(t=>{const s=t.offsetTop;pageYOffset>=s-70&&(e=t.getAttribute("id"))}),navLi.forEach(t=>{t.classList.remove("active"),t.getAttribute("href")==`#${e}`&&t.classList.add("active")})});
-            
-            // --- "Fade In On Scroll" Animation Logic ---
             const observer=new IntersectionObserver(e=>{e.forEach(e=>{e.isIntersecting&&e.target.classList.add("is-visible")})},{threshold:.1}),elementsToAnimate=document.querySelectorAll(".fade-in-element");elementsToAnimate.forEach(e=>observer.observe(e));
-            
-            // --- D3.js Chart Logic ---
             function renderForceGraph(e){const t=d3.select(`#${e}`);if(t.empty())return;const s=t.node().clientWidth,o=t.node().clientHeight,i=t.append("svg").attr("width",s).attr("height",o),n=i.append("g").attr("stroke","#9ca3af").attr("stroke-opacity",.6),a=i.append("g").attr("stroke","#e5e7eb").attr("stroke-width",1.5),r=d3.forceSimulation().force("link",d3.forceLink().id(e=>e.id).distance(50)).force("charge",d3.forceManyBody().strength(-150)).force("center",d3.forceCenter(s/2,o/2));function l(e){const t=e.nodes,s=e.links,o=a.selectAll("circle").data(t,e=>e.id);o.exit().remove(),o.enter().append("circle").attr("r",5).attr("fill","#374151").append("title").text(e=>e.id);const i=n.selectAll("line").data(s,e=>`${e.source.id}-${e.target.id}`);i.exit().remove(),i.enter().append("line").attr("stroke-width",1.5),r.nodes(t),r.force("link").links(s),r.alpha(1).restart()}r.on("tick",()=>{n.selectAll("line").attr("x1",e=>e.source.x).attr("y1",e=>e.source.y).attr("x2",e=>e.target.x).attr("y2",e=>e.target.y),a.selectAll("circle").attr("cx",e=>e.x).attr("cy",e=>e.y)});const c=()=>{const e=25,t=Array.from({length:e},(_,e)=>({id:e}));return{nodes:t,links:Array.from({length:e-1},()=>({source:Math.floor(Math.random()*e),target:Math.floor(Math.random()*e)})).filter(e=>e.source!==e.target)}};l(c()),t.on("click",()=>l(c()))}
             function renderBarChart(e){const t=d3.select(`#${e}`);if(t.empty())return;const s=t.node().clientWidth,o=t.node().clientHeight,i={top:20,right:20,bottom:20,left:20},n=s-i.left-i.right,a=o-i.top-i.bottom,r=t.append("svg").attr("width",s).attr("height",o),l=r.append("g").attr("transform",`translate(${i.left}, ${i.top})`);function c(e){const t=d3.scaleBand().domain(e.map(e=>e.label)).range([0,n]).padding(.2),s=d3.scaleLinear().domain([0,110]).range([a,0]),o=l.selectAll(".bar").data(e,e=>e.label);o.enter().append("rect").attr("class","bar").attr("fill","#111827").attr("x",e=>t(e.label)).attr("width",t.bandwidth()).attr("y",a).attr("height",0).merge(o).transition().duration(800).attr("x",e=>t(e.label)).attr("width",t.bandwidth()).attr("y",e=>s(e.value)).attr("height",e=>a-s(e.value))}const d=()=>[{label:"A",value:Math.floor(100*Math.random())+10},{label:"B",value:Math.floor(100*Math.random())+10},{label:"C",value:Math.floor(100*Math.random())+10},{label:"D",value:Math.floor(100*Math.random())+10},{label:"E",value:Math.floor(100*Math.random())+10},{label:"F",value:Math.floor(100*Math.random())+10}];c(d()),t.on("click",()=>c(d()))}
             renderForceGraph("force-graph-container"),renderBarChart("bar-chart-container");
-            
-            // --- Form Submission Logic ---
             const contactForm=document.getElementById("contact-form"),successMessage=document.getElementById("success-message"),errorMessage=document.getElementById("error-message"),n8nWebhookUrl="https://n8n.joemur.com/webhook/52d3d76a-fc23-411e-8ca5-6670d5bd4dd2";contactForm.addEventListener("submit",async e=>{e.preventDefault();const t=contactForm.querySelector('button[type="submit"]'),s=t.innerHTML,o=grecaptcha.getResponse();if(0===o.length)return errorMessage.innerHTML="<p>Please complete the reCAPTCHA.</p>",void errorMessage.classList.remove("hidden");t.disabled=!0,t.innerHTML="Sending...";const i=new FormData(contactForm),n=Object.fromEntries(i.entries());try{const e=await fetch(n8nWebhookUrl,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(n)});if(!e.ok)throw new Error("Network response was not ok.")
             successMessage.classList.remove("hidden"),errorMessage.classList.add("hidden"),contactForm.reset(),grecaptcha.reset()}catch(e){console.error("There was a problem with the fetch operation:",e),errorMessage.innerHTML="<p>Something went wrong. Please try again later.</p>",errorMessage.classList.remove("hidden"),successMessage.classList.add("hidden")}finally{t.disabled=!1,t.innerHTML=s}});
-
-            // --- Swiper Slider Initialization ---
-            const swiper = new Swiper('.mySwiper', {
-                effect: 'coverflow',
-                grabCursor: true,
-                centeredSlides: true,
-                slidesPerView: 'auto',
-                loop: true,
-                coverflowEffect: {
-                    rotate: 50,
-                    stretch: 0,
-                    depth: 100,
-                    modifier: 1,
-                    slideShadows: true,
-                },
-                pagination: {
-                    el: '.swiper-pagination',
-                },
-                navigation: {
-                    nextEl: '.swiper-button-next',
-                    prevEl: '.swiper-button-prev',
-                },
-                
-            });
+            const swiper=new Swiper(".apple-slider",{effect:"slide",grabCursor:!0,centeredSlides:!0,slidesPerView:"auto",loop:!0,autoplay:{delay:4e3,disableOnInteraction:!1},pagination:{el:".swiper-pagination",clickable:!0},navigation:{nextEl:".swiper-button-next",prevEl:".swiper-button-prev"}});
         });
-
-
-        
     </script>
 </body>
 </html>
