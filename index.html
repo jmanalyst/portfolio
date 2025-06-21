@@ -11,13 +11,11 @@
 
     <style>
         body {
-            /* Inverted */
             background-color: #ffffff;
             font-family: 'Inter', sans-serif;
-            color: #1f2937; /* dark-gray-800 */
+            color: #1f2937; 
         }
         header {
-            /* Inverted */
             background-color: rgba(255, 255, 255, 0.7);
             backdrop-filter: blur(10px);
             -webkit-backdrop-filter: blur(10px);
@@ -32,14 +30,14 @@
             height: 100%;
         }
         .nav-link.active {
-             /* Inverted */
             color: #000000;
             font-weight: 700;
         }
         .chart-container {
             cursor: pointer;
-            border: 1px solid #e5e7eb; /* light gray border for charts */
+            border: 1px solid #e5e7eb; 
             border-radius: 0.75rem;
+            background-color: #f9fafb;
         }
         @keyframes bounce {
             0%, 20%, 50%, 80%, 100% {
@@ -130,8 +128,8 @@
                     </p>
                 </div>
                 <div class="mt-12 grid grid-cols-1 md:grid-cols-2 gap-8">
-                    <div id="force-graph-container" class="chart-container w-full h-[300px] sm:h-[350px] fade-in-element" title="Click to restart animation"></div>
-                    <div id="bar-chart-container" class="chart-container w-full h-[300px] sm:h-[350px] fade-in-element" title="Click to restart animation"></div>
+                    <div id="force-graph-container" class="chart-container w-full h-[300px] sm:h-[350px] p-2 fade-in-element" title="Click to restart animation"></div>
+                    <div id="bar-chart-container" class="chart-container w-full h-[300px] sm:h-[350px] p-2 fade-in-element" title="Click to restart animation"></div>
                 </div>
             </div>
         </section>
@@ -177,13 +175,55 @@
         </section>
 
         <section id="contact" class="py-16 sm:py-24 bg-white">
-            <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-                 <h2 class="text-3xl font-bold tracking-tight text-black fade-in-element">Contact Me</h2>
-                 <p class="mt-4 text-lg text-gray-600 fade-in-element">Let's connect and bring your data to life.</p>
-                <div class="mt-8 space-y-3 text-lg text-gray-800 inline-block text-left fade-in-element">
-                    <p><strong>Location:</strong> Houston, Texas</p>
-                    <p><strong>Phone:</strong> (281) 772-1495</p>
-                    <p><strong>Email:</strong> murguia.joe@gmail.com</p>
+            <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-12">
+                     <h2 class="text-3xl font-bold tracking-tight text-black fade-in-element">Contact Me</h2>
+                     <p class="mt-4 text-lg text-gray-600 fade-in-element">Have a question or want to work together? Let's connect.</p>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-16">
+                    <div class="fade-in-element">
+                        <form id="contact-form" class="space-y-6">
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                                <div>
+                                    <label for="first_name" class="block text-sm font-medium text-gray-700">First Name</label>
+                                    <input type="text" id="first_name" name="first_name" class="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-black focus:border-black" required>
+                                </div>
+                                <div>
+                                    <label for="last_name" class="block text-sm font-medium text-gray-700">Last Name</label>
+                                    <input type="text" id="last_name" name="last_name" class="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-black focus:border-black">
+                                </div>
+                            </div>
+                            <div>
+                                <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
+                                <input type="email" id="email" name="email" class="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-black focus:border-black" required>
+                            </div>
+                            <div>
+                                <label for="phone_number" class="block text-sm font-medium text-gray-700">Phone Number <span class="text-gray-400">(Optional)</span></label>
+                                <input type="tel" id="phone_number" name="phone_number" class="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-black focus:border-black">
+                            </div>
+                            <div>
+                                <label for="message" class="block text-sm font-medium text-gray-700">Message</label>
+                                <textarea id="message" name="message" rows="4" class="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-black focus:border-black" required></textarea>
+                            </div>
+                            <div>
+                                <button type="submit" class="w-full flex justify-center py-3 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-black hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-black">Send Message</button>
+                            </div>
+                        </form>
+                        <div id="success-message" class="hidden mt-4 p-4 rounded-md bg-green-50 text-green-700">
+                            Thank you for your message! I'll get back to you shortly.
+                        </div>
+                        <div id="error-message" class="hidden mt-4 p-4 rounded-md bg-red-50 text-red-700">
+                            Something went wrong. Please try again later.
+                        </div>
+                    </div>
+                    <div class="fade-in-element">
+                         <h3 class="text-2xl font-semibold text-black">Contact Information</h3>
+                         <div class="mt-6 pt-6 border-t border-gray-200 space-y-4 text-lg text-gray-700">
+                             <p><strong>Location:</strong><br>Houston, Texas</p>
+                             <p><strong>Phone:</strong><br>(281) 772-1495</p>
+                             <p><strong>Email:</strong><br>murguia.joe@gmail.com</p>
+                         </div>
+                    </div>
                 </div>
             </div>
         </section>
@@ -221,7 +261,7 @@
             let height = canvas.height;
             const particleCount = 200;
             const particles = [];
-            const colors = ['#FFFFFF', '#F5F5F5', '#E8E8E8', '#DCDCDC', '#F0F0F0']; // Light particles are fine on black hero bg
+            const colors = ['#FFFFFF', '#F5F5F5', '#E8E8E8', '#DCDCDC', '#F0F0F0'];
             let centralRadius = Math.min(width, height) * 0.4;
             class Particle{constructor(){this.centerX=width/2;this.centerY=height/2;this.reset()}
             createShape(){const sides=Math.floor(Math.random()*3+3);const shape=[];for(let i=0;i<sides;i++){const angle=(i/sides)*Math.PI*2;const radius=this.baseSize*(0.6+Math.random()*0.4);shape.push({x:Math.cos(angle)*radius,y:Math.sin(angle)*radius})}
@@ -230,10 +270,7 @@
             update(){const depth=this.radius/this.maxRadius;this.scale=(1.5-depth)*1.5;this.opacity=Math.max(0,this.scale/2.25);this.angle+=this.angularVelocity;this.radius-=this.baseRadiusVelocity*this.scale;this.x=this.centerX+Math.cos(this.angle)*this.radius;this.y=this.centerY+Math.sin(this.angle)*this.radius;this.rotation+=this.rotationSpeed;if(this.radius<1){this.reset()}}
             draw(){ctx.save();ctx.translate(this.x,this.y);ctx.rotate(this.rotation);ctx.scale(this.scale,this.scale);ctx.fillStyle=`rgba(${this.rgbColor[0]}, ${this.rgbColor[1]}, ${this.rgbColor[2]}, ${this.opacity})`;ctx.beginPath();ctx.moveTo(this.shape[0].x,this.shape[0].y);for(let i=1;i<this.shape.length;i++){ctx.lineTo(this.shape[i].x,this.shape[i].y)}
             ctx.closePath();ctx.fill();ctx.restore()}}
-            function initParticles(){
-                particles.length = 0; 
-                for(let i=0;i<particleCount;i++){particles.push(new Particle())}
-            }
+            function initParticles(){ particles.length=0;for(let i=0;i<particleCount;i++){particles.push(new Particle())} }
             function animateParticles(){ctx.fillStyle='#000000';ctx.fillRect(0,0,width,height);particles.forEach(p=>{p.update();p.draw()});requestAnimationFrame(animateParticles)}
             const resizeObserver = new ResizeObserver(() => {
                 canvas.width = heroSection.clientWidth;
@@ -274,7 +311,7 @@
                     if (pageYOffset >= sectionTop - 70) {
                         current = section.getAttribute('id');
                     }
-                })
+                });
                 navLi.forEach( a => {
                     a.classList.remove('active');
                     if (a.getAttribute('href') == `#${current}`) {
@@ -300,42 +337,28 @@
                 if (container.empty()) return;
                 const width = container.node().clientWidth;
                 const height = container.node().clientHeight;
-
                 const svg = container.append("svg").attr("width", width).attr("height", height);
-                const linkGroup = svg.append("g").attr("stroke", "#9ca3af").attr("stroke-opacity", 0.6); // inverted
-                const nodeGroup = svg.append("g").attr("stroke", "#e5e7eb").attr("stroke-width", 1.5); // inverted
-
-                const simulation = d3.forceSimulation()
-                    .force("link", d3.forceLink().id(d => d.id).distance(50))
-                    .force("charge", d3.forceManyBody().strength(-150))
-                    .force("center", d3.forceCenter(width / 2, height / 2));
-
+                const linkGroup = svg.append("g").attr("stroke", "#9ca3af").attr("stroke-opacity", 0.6);
+                const nodeGroup = svg.append("g").attr("stroke", "#e5e7eb").attr("stroke-width", 1.5);
+                const simulation = d3.forceSimulation().force("link", d3.forceLink().id(d => d.id).distance(50)).force("charge", d3.forceManyBody().strength(-150)).force("center", d3.forceCenter(width / 2, height / 2));
                 function update(data) {
                     const nodes = data.nodes; const links = data.links;
                     const nodeSelection = nodeGroup.selectAll("circle").data(nodes, d => d.id);
                     nodeSelection.exit().remove();
-                    nodeSelection.enter().append("circle").attr("r", 5).attr("fill", "#374151").append("title").text(d => d.id); // inverted fill
+                    nodeSelection.enter().append("circle").attr("r", 5).attr("fill", "#374151").append("title").text(d => d.id);
                     const linkSelection = linkGroup.selectAll("line").data(links, d => `${d.source.id}-${d.target.id}`);
                     linkSelection.exit().remove();
                     linkSelection.enter().append("line").attr("stroke-width", 1.5);
                     simulation.nodes(nodes); simulation.force("link").links(links); simulation.alpha(1).restart();
                 }
-
                 simulation.on("tick", () => {
                     linkGroup.selectAll("line").attr("x1", d => d.source.x).attr("y1", d => d.source.y).attr("x2", d => d.target.x).attr("y2", d => d.target.y);
                     nodeGroup.selectAll("circle").attr("cx", d => d.x).attr("cy", d => d.y);
                 });
-                
-                const generateData = () => {
-                    const numNodes = 25;
-                    const nodes = Array.from({ length: numNodes }, (_, i) => ({ id: i }));
-                    const links = Array.from({ length: numNodes - 1 }, () => ({ source: Math.floor(Math.random() * numNodes), target: Math.floor(Math.random() * numNodes), })).filter(d => d.source !== d.target);
-                    return { nodes, links };
-                };
+                const generateData = () => { const numNodes = 25; const nodes = Array.from({ length: numNodes }, (_, i) => ({ id: i })); const links = Array.from({ length: numNodes - 1 }, () => ({ source: Math.floor(Math.random() * numNodes), target: Math.floor(Math.random() * numNodes), })).filter(d => d.source !== d.target); return { nodes, links }; };
                 update(generateData());
                 container.on("click", () => update(generateData()));
             }
-
             function renderBarChart(containerId) {
                 const container = d3.select(`#${containerId}`);
                 if (container.empty()) return;
@@ -344,17 +367,13 @@
                 const margin = { top: 20, right: 20, bottom: 20, left: 20 };
                 const boundedWidth = width - margin.left - margin.right;
                 const boundedHeight = height - margin.top - margin.bottom;
-
                 const svg = container.append("svg").attr("width", width).attr("height", height);
                 const g = svg.append("g").attr("transform", `translate(${margin.left}, ${margin.top})`);
-                
                 function update(data) {
                     const xScale = d3.scaleBand().domain(data.map(d => d.label)).range([0, boundedWidth]).padding(0.2);
                     const yScale = d3.scaleLinear().domain([0, 110]).range([boundedHeight, 0]);
-
                     const bars = g.selectAll(".bar").data(data, d => d.label);
-                    
-                    bars.enter().append("rect").attr("class", "bar").attr("fill", "#111827") // inverted fill
+                    bars.enter().append("rect").attr("class", "bar").attr("fill", "#111827")
                         .attr("x", d => xScale(d.label)).attr("width", xScale.bandwidth())
                         .attr("y", boundedHeight).attr("height", 0)
                         .merge(bars)
@@ -362,14 +381,56 @@
                         .attr("x", d => xScale(d.label)).attr("width", xScale.bandwidth())
                         .attr("y", d => yScale(d.value)).attr("height", d => boundedHeight - yScale(d.value));
                 }
-
                 const generateData = () => [ { label: 'A', value: Math.floor(Math.random() * 100) + 10 }, { label: 'B', value: Math.floor(Math.random() * 100) + 10 }, { label: 'C', value: Math.floor(Math.random() * 100) + 10 }, { label: 'D', value: Math.floor(Math.random() * 100) + 10 }, { label: 'E', value: Math.floor(Math.random() * 100) + 10 }, { label: 'F', value: Math.floor(Math.random() * 100) + 10 }, ];
                 update(generateData());
                 container.on("click", () => update(generateData()));
             }
-
             renderForceGraph('force-graph-container');
             renderBarChart('bar-chart-container');
+
+            // --- Form Submission Logic ---
+            const contactForm = document.getElementById('contact-form');
+            const successMessage = document.getElementById('success-message');
+            const errorMessage = document.getElementById('error-message');
+            // MODIFICATION: Your n8n Test URL is now included.
+            const n8nWebhookUrl = 'https://n8n.joemur.com/webhook/52d3d76a-fc23-411e-8ca5-6670d5bd4dd2'; 
+
+            contactForm.addEventListener('submit', async (event) => {
+                event.preventDefault(); 
+                
+                const submitButton = contactForm.querySelector('button[type="submit"]');
+                const originalButtonText = submitButton.innerHTML;
+                submitButton.disabled = true;
+                submitButton.innerHTML = 'Sending...';
+
+                const formData = new FormData(contactForm);
+                const data = Object.fromEntries(formData.entries());
+
+                try {
+                    const response = await fetch(n8nWebhookUrl, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify(data),
+                    });
+
+                    if (response.ok) {
+                        successMessage.classList.remove('hidden');
+                        errorMessage.classList.add('hidden');
+                        contactForm.reset();
+                    } else {
+                        throw new Error('Network response was not ok.');
+                    }
+                } catch (error) {
+                    console.error('There was a problem with the fetch operation:', error);
+                    errorMessage.classList.remove('hidden');
+                    successMessage.classList.add('hidden');
+                } finally {
+                    submitButton.disabled = false;
+                    submitButton.innerHTML = originalButtonText;
+                }
+            });
         });
     </script>
 </body>
