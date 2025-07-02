@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>VISUAL & CO. LABS | Data Analytics & Web Development in Houston, TX</title>
+    <title>Visual Lab Studios | Data Analytics & Web Development in Houston, TX</title>
     <meta name="description" content="Portfolio of Jose Murguia, a data analytics and web development professional in Houston, TX. Specializing in Python, Power BI, and creating interactive data visualizations.">
     
     <script src="https://cdn.tailwindcss.com"></script>
@@ -130,6 +130,35 @@
             font-size: 12px;
             fill: #6b7280;
         }
+
+        /* New Contact Form Styles */
+        .form-input {
+            display: block;
+            width: 100%;
+            padding: 0.75rem 1rem;
+            background-color: #f3f4f6;
+            border: 1px solid #f3f4f6;
+            border-radius: 0.75rem; /* Rounded corners */
+            box-shadow: none;
+            font-size: 1rem;
+            color: #1f2937;
+            transition: background-color 0.2s, border-color 0.2s;
+        }
+        .form-input::placeholder {
+            color: #9ca3af;
+        }
+        .form-input:focus {
+            outline: none;
+            border-color: #a5b4fc; /* Focus border color */
+            background-color: #ffffff;
+        }
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: #374151;
+        }
     </style>
 </head>
 <body class="bg-white">
@@ -138,7 +167,7 @@
         <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex items-center justify-between h-16">
                 <div class="flex-shrink-0">
-                    <a href="#" class="text-xl font-bold tracking-tight text-black">VISUAL & CO. LABS</a>
+                    <a href="#" class="text-xl font-bold tracking-tight text-black">Visual Lab Studios</a>
                 </div>
                 <div class="hidden md:block">
                     <ul class="flex items-center space-x-10">
@@ -172,7 +201,7 @@
         <section id="hero" class="relative h-[85vh] flex flex-col items-center justify-center text-center overflow-hidden px-4 bg-black">
             <canvas id="particleCanvas"></canvas>
             <div class="relative z-10">
-                <h1 class="text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight text-white">VISUAL & CO. LABS</h1>
+                <h1 class="text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight text-white">Visual Lab Studios</h1>
                 <p class="mt-4 text-lg text-gray-300">Web Development - Data Analytics - Data Visualization - Automation</p>
             </div>
             <div class="absolute bottom-10 z-10">
@@ -218,7 +247,6 @@
                     </div>
                 </div>
                 
-                <!-- RECOMMENDED SECTION WITH NEW CHART -->
                 <div class="mt-20 fade-in-element">
                     <h3 class="text-2xl font-bold tracking-tight text-black">The Race of AI Trends</h3>
                      <div class="max-w-5xl mx-auto mt-8 bg-white p-4 sm:p-6 rounded-lg shadow-lg border border-gray-200">
@@ -260,37 +288,44 @@
 
              </div>
         </section>
-
+        
         <section id="contact" class="py-16 sm:py-24 bg-white">
-            <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="max-w-lg mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="text-center mb-12">
-                     <h2 class="text-3xl font-bold tracking-tight text-black fade-in-element">Contact Me</h2>
-                     <p class="mt-4 text-lg text-gray-600 fade-in-element">Have a question or want to work together?</p>
+                     <h2 class="text-3xl font-bold tracking-tight text-black fade-in-element">CONTACT</h2>
+                     <p class="mt-4 text-lg text-gray-600 fade-in-element"> Contact us for more information </p>
                 </div>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-16">
-                    <div class="fade-in-element">
-                        <form id="contact-form" class="space-y-6">
-                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                                <div><label for="first_name" class="block text-sm font-medium text-gray-700">First Name</label><input type="text" id="first_name" name="first_name" class="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-black focus:border-black" required></div>
-                                <div><label for="last_name" class="block text-sm font-medium text-gray-700">Last Name</label><input type="text" id="last_name" name="last_name" class="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-black focus:border-black"></div>
+                <div class="fade-in-element">
+                    <form id="contact-form" class="space-y-6">
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                            <div>
+                                <label for="first_name" class="form-label">First Name</label>
+                                <input type="text" id="first_name" name="first_name" class="form-input" required>
                             </div>
-                            <div><label for="email" class="block text-sm font-medium text-gray-700">Email</label><input type="email" id="email" name="email" class="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-black focus:border-black" required></div>
-                            <div><label for="phone_number" class="block text-sm font-medium text-gray-700">Phone Number <span class="text-gray-400">(Optional)</span></label><input type="tel" id="phone_number" name="phone_number" class="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-black focus:border-black"></div>
-                            <div><label for="message" class="block text-sm font-medium text-gray-700">Message</label><textarea id="message" name="message" rows="4" class="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-black focus:border-black" required></textarea></div>
-                            <div class="g-recaptcha" data-sitekey="6LdkW2grAAAAAMpjfTgRRXaqcoaPP5FXvl--5fMJ"></div>
-                            <div><button type="submit" class="w-full flex justify-center py-3 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-black hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-black">Send Message</button></div>
-                        </form>
-                        <div id="success-message" class="hidden mt-4 p-4 rounded-md bg-green-50 text-green-700"><p>Thank you for your message! I'll get back to you shortly.</p></div>
-                        <div id="error-message" class="hidden mt-4 p-4 rounded-md bg-red-50 text-red-700"><p>Something went wrong. Please complete the CAPTCHA and try again.</p></div>
-                    </div>
-                    <div class="fade-in-element">
-                         <h3 class="text-2xl font-semibold text-black">Contact Information</h3>
-                         <div class="mt-6 pt-6 border-t border-gray-200 space-y-4 text-lg text-gray-700">
-                             <p><strong>Location:</strong><br>Houston, Texas</p>
-                             <p><strong>Phone:</strong><br>(281) 772-1495</p>
-                             <p><strong>Email:</strong><br>murguia.joe@gmail.com</p>
-                         </div>
-                    </div>
+                            <div>
+                                <label for="last_name" class="form-label">Last Name</label>
+                                <input type="text" id="last_name" name="last_name" class="form-input">
+                            </div>
+                        </div>
+                        <div>
+                            <label for="email" class="form-label">Email</label>
+                            <input type="email" id="email" name="email" class="form-input" required>
+                        </div>
+                        <div>
+                            <label for="phone_number" class="form-label">Phone Number <span class="text-gray-400">(Optional)</span></label>
+                            <input type="tel" id="phone_number" name="phone_number" class="form-input">
+                        </div>
+                        <div>
+                            <label for="message" class="form-label">Message</label>
+                            <textarea id="message" name="message" rows="4" class="form-input" required></textarea>
+                        </div>
+                        <div class="g-recaptcha" data-sitekey="6LdkW2grAAAAAMpjfTgRRXaqcoaPP5FXvl--5fMJ"></div>
+                        <div>
+                            <button type="submit" class="w-full flex justify-center py-3 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-black hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-black">Send Message</button>
+                        </div>
+                    </form>
+                    <div id="success-message" class="hidden mt-4 p-4 rounded-md bg-green-50 text-green-700"><p>Thank you for your message! I'll get back to you shortly.</p></div>
+                    <div id="error-message" class="hidden mt-4 p-4 rounded-md bg-red-50 text-red-700"><p>Something went wrong. Please complete the CAPTCHA and try again.</p></div>
                 </div>
             </div>
         </section>
