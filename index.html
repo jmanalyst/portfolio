@@ -153,12 +153,12 @@
         }
 
         .hero-section h1 {
-            font-size: 5rem; 
+            font-size: 4rem; 
             font-weight: 700; 
             margin: 0 auto;
             position: relative;
             display: inline-block;
-            letter-spacing: -2px;
+            letter-spacing: 15px;
         }
         
         .hero-section h1::after {
@@ -169,7 +169,7 @@
             transform: translateX(-50%);
             width: 120%;
             height: 10px;
-            background-image: url('data:image/svg+xml;utf8,<svg width="100" height="10" viewBox="0 0 100 10" xmlns="http://www.w3.org/2000/svg"><path d="M0,5 Q25,0 50,5 T100,5" fill="none" stroke="white" stroke-width="2"/></svg>');
+            /* background-image: url('data:image/svg+xml;utf8,<svg width="100" height="10" viewBox="0 0 100 10" xmlns="http://www.w3.org/2000/svg"><path d="M0,5 Q25,0 50,5 T100,5" fill="none" stroke="white" stroke-width="2"/></svg>'); */
             background-repeat: repeat-x;
             background-size: 25px;
         }
@@ -880,6 +880,16 @@
             .mobile-menu-toggle {
                 display: none;
             }
+            
+            /* Hide mobile-only navigation items on desktop */
+            .mobile-only {
+                display: none;
+            }
+        }
+        
+        /* Mobile-only navigation items - hidden by default, shown in mobile nav */
+        .mobile-only {
+            display: list-item;
         }
     </style>
 </head>
@@ -894,7 +904,7 @@
                 <li><a href="#about">ABOUT</a></li>
                 <li><a href="#expertise">SERVICES</a></li>
                 <li><a href="#projects">PROJECTS</a></li>
-                <!-- <li><a href="#contact">CONTACT</a></li> -->
+                <li class="mobile-only"><a href="#contact">CONTACT</a></li>
             </ul>
         </nav>
         <button class="mobile-menu-toggle" aria-label="Toggle mobile menu">☰</button>
@@ -983,32 +993,32 @@
             <div class="sticky-scroll-container">
                 <div class="project-text-column">
                     <div class="project-info-block" data-image-target="project-image-1">
-                        <div class="mobile-project-image" style="background-image: url('/images/ecom1.png');"></div>
+                        <div class="mobile-project-image" style="background-image: url('images/ecom1.png');"></div>
                         <p class="project-category">Full-Stack Development</p>
                         <h3>E-Commerce storefront with Stripe & PostgreSQL</h3>
                     </div>
                     <div class="project-info-block" data-image-target="project-image-2">
-                        <div class="mobile-project-image" style="background-image: url('/images/mphapp.png');"></div>
+                        <div class="mobile-project-image" style="background-image: url('images/mphapp.png');"></div>
                         <p class="project-category">App Development</p>
                         <h3>Ordering app for food business</h3>
                     </div>
                     <div class="project-info-block" data-image-target="project-image-3">
-                        <div class="mobile-project-image" style="background-image: url('/images/chatagent.png');"></div>
+                        <div class="mobile-project-image" style="background-image: url('images/chatagent.png');"></div>
                         <p class="project-category">Automation</p>
                         <h3>AI-powered business automation with automation tools</h3>
                     </div>
                     <div class="project-info-block" data-image-target="project-image-4">
-                        <div class="mobile-project-image" style="background-image: url('/images/mphweb.png');"></div>
+                        <div class="mobile-project-image" style="background-image: url('images/mphweb.png');"></div>
                         <p class="project-category">Web Development</p>
                         <h3>Catering Business Web Development</h3>
                     </div>
                 </div>
                 <div class="project-image-column">
                     <div class="project-image-wrapper">
-                        <div class="project-image active" id="project-image-1" style="background-image: url('/images/ecom1.png');"></div>
-                        <div class="project-image" id="project-image-2" style="background-image: url('/images/mphapp.png');"></div>
-                        <div class="project-image" id="project-image-3" style="background-image: url('/images/chatagent.png');"></div>
-                        <div class="project-image" id="project-image-4" style="background-image: url('/images/mphweb.png');"></div>
+                        <div class="project-image active" id="project-image-1" style="background-image: url('images/ecom1.png');"></div>
+                        <div class="project-image" id="project-image-2" style="background-image: url('images/mphapp.png');"></div>
+                        <div class="project-image" id="project-image-3" style="background-image: url('images/chatagent.png');"></div>
+                        <div class="project-image" id="project-image-4" style="background-image: url('images/mphweb.png');"></div>
                     </div>
                 </div>
             </div>
